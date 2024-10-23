@@ -1,0 +1,22 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "Servidor express con API de acceso a datos web profesores",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enrilpz04/TeacherApp-BackEnd.git"
+  },
+  "author": "mlpz2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/enrilpz04/TeacherApp-BackEnd/issues"
+  },
+  "homepage": "https://github.com/enrilpz04/TeacherApp-BackEnd#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}

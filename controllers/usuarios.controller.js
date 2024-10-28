@@ -1,3 +1,7 @@
 exports.getUser = (request, response) => {
-    response.json("Hola");
+    if (request.query.email != null && request.query.password != null) {
+        response.json("Hola");
+    } else {
+        response.json("Error");
+    }
 };

@@ -1,3 +1,17 @@
 @host = http://localhost:3000
 
-GET {{host}}/api/t
+### Obtener todos los teachers
+GET {{host}}/teachers
+
+### Filtrar teachers
+POST {{host}}/api/teachers/filter
+Content-Type: application/json
+
+{
+    "knowledge": "",
+    "schedule": "Mañana",
+    "minPrice": 20,
+    "maxPrice": 100,
+    "orderOption": "Mejor Valoracion",
+    "name": "Al"
+}

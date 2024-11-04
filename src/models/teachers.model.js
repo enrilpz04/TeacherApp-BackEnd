@@ -11,6 +11,10 @@ const Teacher = sequelize.define('Teacher', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  schedule: {
+    type: DataTypes.ENUM('Mañana', 'Tarde', 'Noche'),
+    allowNull: false
+  },
   price_p_hour: {
     type: DataTypes.FLOAT,
     allowNull: false

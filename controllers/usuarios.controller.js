@@ -1,11 +1,10 @@
 const db = require('../sql/db.js');
 
-exports.getUser = (request, response) => {
-    console.log('http://localhost:3000/api/user?email=EMAIL&password=PASSWORD');
-    if (request.query.email != null && request.query.password != null) {
+exports.login = (request, response) => {
+    if (request.body.email != null && request.body.password != null) {
         db.query(
-            'select * from usuarios where email = \'' + request.query.email + '\''
-            + ' and password = \'' + request.query.password + '\';',
+            'select * from usuarios where email = \'' + request.body.email + '\''
+            + ' and password = \'' + request.body.password + '\';',
              (error, resultado) => {
                 if (error) {
                     response.json("Error");
@@ -19,4 +18,4 @@ exports.getUser = (request, response) => {
     } else {
         response.json("Error");
     }
-};
+}

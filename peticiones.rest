@@ -15,3 +15,24 @@ Content-Type: application/json
     "orderOption": "Mejor Valoracion",
     "name": "Al"
 }
+
+### Register
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+    "name": "Enrique",
+    "surname": "Garcia",
+    "email": "enriquelopezgordillo@gmail.com",
+    "password": "123456",
+    "rol": "teacher"
+}
+
+### Login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "enriquelopezgordillo@gmail.com",
+    "password": "123456"
+}

@@ -27,6 +27,10 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  avatar: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   rol: {
     type: DataTypes.ENUM('admin', 'student', 'teacher'),
     allowNull: false

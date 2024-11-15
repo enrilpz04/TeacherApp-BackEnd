@@ -1,7 +1,7 @@
 @host = http://localhost:3000
 
 ### Obtener todos los teachers
-GET {{host}}/teachers
+GET {{host}}/api/teachers
 
 ### Filtrar teachers
 POST {{host}}/api/teachers/filter

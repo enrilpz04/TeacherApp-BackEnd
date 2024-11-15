@@ -24,6 +24,29 @@ const getAllTeachers = async (req, res) => {
   }
 };
 
+const getTeacherById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const teacher = await Teacher.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Knowledge,
+          as: 'knowledges',
+          through: { attributes: [] } // Para excluir los atributos de la tabla intermedia
+        }
+      ]
+    });
+    res.status(200).json(teacher);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Método para obtener teachers con filtros
 const getFilteredTeachers = async (req, res) => {
   const { knowledge, schedule, minPrice, maxPrice, orderOption, name } = req.body;
@@ -75,10 +98,10 @@ const getFilteredTeachers = async (req, res) => {
         order.push(['rating', 'DESC']);
         console.log(order);
         break;
-      case 'Precio más Alto':
+      case 'Precio más alto':
         order.push(['price_p_hour', 'DESC']);
         break;
-      case 'Precio más Bajo':
+      case 'Precio más bajo':
         order.push(['price_p_hour', 'ASC']);
         break;
       default:
@@ -100,5 +123,6 @@ const getFilteredTeachers = async (req, res) => {
 
 module.exports = {
   getAllTeachers,
+  getTeacherById,
   getFilteredTeachers
 };

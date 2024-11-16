@@ -47,6 +47,53 @@ const getTeacherById = async (req, res) => {
   }
 };
 
+const createTeacher = async (req, res) => {
+  const { userId, price_p_hour, schedule, knowledges } = req.body;
+  try {
+    const teacher = await Teacher.create({
+      userId,
+      price_p_hour,
+      schedule,
+      knowledges
+    });
+    res.status(201).json(teacher);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const updateTeacher = async (req, res) => {
+  const { id } = req.params;
+  const { price_p_hour, schedule, knowledges } = req.body;
+  try {
+    const teacher = await Teacher.findByPk(id);
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher no encontrado' });
+    }
+    teacher.price_p_hour = price_p_hour;
+    teacher.schedule = schedule;
+    teacher.knowledges = knowledges;
+    await teacher.save();
+    res.status(200).json(teacher);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const deleteTeacher = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const teacher = await Teacher.findByPk(id);
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher no encontrado' });
+    }
+    await teacher.destroy();
+    res.status(200).json({ message: 'Teacher eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Método para obtener teachers con filtros
 const getFilteredTeachers = async (req, res) => {
   const { knowledge, schedule, minPrice, maxPrice, orderOption, name } = req.body;
@@ -121,8 +168,39 @@ const getFilteredTeachers = async (req, res) => {
   }
 };
 
+const getAllTeachersByLocation = async (req, res) => {
+  const { latitude, longitude } = req.body;
+  try {
+    const teachers = await Teacher.findAll({
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Knowledge,
+          as: 'knowledges',
+          through: { attributes: [] } // Para excluir los atributos de la tabla intermedia
+        }
+      ]
+    });
+    const filteredTeachers = teachers.filter(teacher => {
+      const distance = getDistanceFromLatLonInKm(teacher.latitude, teacher.longitude, latitude, longitude);
+      return distance <= 10;
+    });
+    res.status(200).json(filteredTeachers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   getAllTeachers,
   getTeacherById,
-  getFilteredTeachers
+  getFilteredTeachers,
+  createTeacher,
+  updateTeacher,
+  deleteTeacher,
+  getAllTeachersByLocation
 };

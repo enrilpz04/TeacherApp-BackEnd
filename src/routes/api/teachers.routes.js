@@ -20,6 +20,4 @@ router.post('/filter', getFilteredTeachers);
 router.post('/location', getAllTeachersByLocation);
 
 
-
-
 module.exports = router;

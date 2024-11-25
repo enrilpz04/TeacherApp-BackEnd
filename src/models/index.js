@@ -23,5 +23,6 @@ module.exports = {
   sequelize,
   Teacher,
   User,
-  Knowledge
+  Knowledge,
+  Message
 };

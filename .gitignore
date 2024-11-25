@@ -2,3 +2,5 @@
 /package-lock.json
 /dist
 /.env
+/.vscode
+.env

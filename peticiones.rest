@@ -11,6 +11,7 @@ Content-Type: application/json
     "knowledge": "",
     "schedule": "Mañana",
     "minPrice": 20,
+
     "maxPrice": 100,
     "orderOption": "Mejor Valoracion",
     "name": "Al"
@@ -38,7 +39,21 @@ Content-Type: application/json
 }
 
 ### Get last messages for user1
-GET {{host}}/api/messages/latests?userId=1
+GET {{host}}/api/messages/latests?userId=4
 
 ### Get messages between user1 and user2
-GET {{host}}/api/messages/between?user1Id=1&user2Id=2
+GET {{host}}/api/messages/between?user1Id=3&user2Id=4
+
+### Creation of messages
+POST {{host}}/api/messages/
+Content-Type: application/json
+
+{
+    "text": "Test message",
+    "date": "2024-11-25 10:10:10",
+    "senderId": 1,
+    "recipientId": 2
+}
+
+### Deletion of message
+DELETE {{host}}/api/messages/5

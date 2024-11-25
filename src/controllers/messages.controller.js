@@ -41,8 +41,8 @@ const getLastMessagesByUser = async (req, res) => {
       `SELECT * FROM messages
       WHERE messages.id IN (
         SELECT MAX(id) FROM messages
-        WHERE recipientId = 2
-          OR senderId = 2
+        WHERE recipientId = ${userId}
+          OR senderId = ${userId}
         GROUP BY (senderId + recipientId))
         ORDER BY DATE DESC`,
       {

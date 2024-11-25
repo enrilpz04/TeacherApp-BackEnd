@@ -14,6 +14,14 @@ const Message = sequelize.define('Message', {
   date: {
     type: DataTypes.DATE,
     allowNull: false
+  },
+  senderId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  recipientId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 }, {
   tableName: 'messages',

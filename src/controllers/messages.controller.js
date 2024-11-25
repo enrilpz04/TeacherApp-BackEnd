@@ -2,11 +2,15 @@ const { Message, User } = require('../models');
 
 // Método para obtener todos los mensajes entre emisor y receptor (conversación)
 const getAllMessagesBetweenSenderAndRecipient = async (req, res) => {
-  const { senderId } = req.query.senderId;
-  const { recipientId } = req.query.recipientId;
+  const { user1 } = req.query.user1;
+  const { user2 } = req.query.user2;
   try {
     const messages = await Message.findAll({
-      where: { senderId, recipientId },
+      where: {
+        [Op.or]: [
+          { recipientId: user1, senderId: user2 },
+          { recipientId: user2, senderId: user1 }
+        ] },
       include: [
         {
           model: User,
@@ -23,13 +27,13 @@ const getAllMessagesBetweenSenderAndRecipient = async (req, res) => {
 
 // Método para obtener el último mensaje de cada conversación de un usuario
 const getLastMessagesByRecipient = async (req, res) => {
-  const { recipientId } = req.query.recipientId;
+  const { user } = req.query.user;
   try {
     const latestMessages = await Message.findAll({      
       where: { 
         [Op.or]: [
-          { senderId: recipientId },
-          { recipientId: recipientId }
+          { recipientId: user },
+          { senderId: user }
         ]
        },
       attributes: [

@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const {
-  getAllMessagesBetweenSenderAndRecipient,
-  getLastMessagesByRecipient,
+  getAllMessagesBetweenSenderAndRecipient: getAllMessagesBetweenUsers,
+  getLastMessagesByRecipient: getLastMessagesByUser,
   createMessage,
   deleteMessage
 } = require('../../controllers/messages.controller');
 
-router.get('/between/', getAllMessagesBetweenSenderAndRecipient);
+router.get('/between/', getAllMessagesBetweenUsers);
 
-router.get('/to/', getLastMessagesByRecipient);
+router.get('/to/', getLastMessagesByUser);
 
 router.post('/', createMessage);
 

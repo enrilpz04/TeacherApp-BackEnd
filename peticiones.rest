@@ -36,3 +36,9 @@ Content-Type: application/json
     "email": "enriquelopezgordillo@gmail.com",
     "password": "123456"
 }
+
+### Get last messages for user1
+GET {{host}}/api/messages/latests?userId=1
+
+### Get messages between user1 and user2
+GET {{host}}/api/messages/between?user1Id=1&user2Id=2

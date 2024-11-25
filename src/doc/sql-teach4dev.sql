@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS messages (
   date DATETIME NOT NULL,
     watched BOOLEAN NOT NULL DEFAULT FALSE,
   senderId INT NOT NULL,
-  recipientId INT NULL,
+  recipientId INT NOT NULL,
   FOREIGN KEY (senderId) REFERENCES users(id),
   FOREIGN KEY (recipientId) REFERENCES users(id)
 );
@@ -123,7 +123,11 @@ INSERT INTO TeacherKnowledge (teacherId, knowledgeId) VALUES
 INSERT INTO messages (text, date, watched, senderId, recipientId) VALUES
 ('Hello, how are you?', '2023-01-01 10:00:00', FALSE, 1, 2),
 ('I need help with my homework.', '2023-01-02 11:00:00', FALSE, 2, 1),
-('Can we reschedule our lesson?', '2023-01-03 12:00:00', FALSE, 3, 4);
+('Can we reschedule our lesson?', '2023-01-03 12:00:00', FALSE, 3, 4),
+('What is your homework about?', '2023-01-04 10:00:00', FALSE, 1, 2),
+('Is about maths.', '2023-01-05 11:00:00', FALSE, 2, 1),
+('Is everything ok?', '2023-01-05 11:00:00', FALSE, 2, 3);
+
 
 -- Insertar datos de prueba en notifications
 INSERT INTO notifications (type, message, date, watched, userId) VALUES

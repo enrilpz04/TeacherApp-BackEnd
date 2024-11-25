@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS messages (
   text TEXT NOT NULL,
   date DATETIME NOT NULL,
     watched BOOLEAN NOT NULL DEFAULT FALSE,
-  senderId INT,
-  recipientId INT,
+  senderId INT NOT NULL,
+  recipientId INT NULL,
   FOREIGN KEY (senderId) REFERENCES users(id),
   FOREIGN KEY (recipientId) REFERENCES users(id)
 );

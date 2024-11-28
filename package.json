@@ -21,8 +21,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
-    "sequelize": "^6.37.5",
-    "teach4dev-backend": "file:"
+    "sequelize": "^6.37.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

@@ -54,6 +54,33 @@ const getAllBookingsFromTeacher = async (req, res) => {
   }
 };
 
+// Método para obtener todos los bookings de un profesor y un estudiante
+const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
+  const { studentId } = req.params;
+  const { teacherId } = req.params;
+  try {
+    const bookings = await Booking.findAll({
+      where: { studentId: studentId, teacherId: teacherId },
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Teacher,
+          as: 'teacher',
+          attributes: ['userId', 'price_p_hour', 'schedule', 'knowledges']
+        }
+      ],
+      order: [['date', 'DESC']]
+    });
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const createBooking = async (req, res) => {
   const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
   try {
@@ -109,6 +136,7 @@ const deleteBooking = async (req, res) => {
 module.exports = {
   getAllBookingsFromStudent,
   getAllBookingsFromTeacher,
+  getAllBookingsBetweenStudentAndTeacher,
   createBooking,
   updateBooking,
   deleteBooking

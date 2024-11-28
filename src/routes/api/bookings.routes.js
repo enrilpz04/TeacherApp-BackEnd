@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {
   getAllBookingsFromStudent,
   getAllBookingsFromTeacher,
+  getAllBookingsBetweenStudentAndTeacher,
   createBooking,
   updateBooking,
   deleteBooking
@@ -10,6 +11,8 @@ const {
 router.get('/user/:studentId', getAllBookingsFromStudent);
 
 router.get('/teacher/:teacherId', getAllBookingsFromTeacher);
+
+router.get('/between/', getAllBookingsBetweenStudentAndTeacher);
 
 router.post('/', createBooking);
 

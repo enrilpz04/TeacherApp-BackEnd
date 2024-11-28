@@ -88,25 +88,19 @@ DELETE {{host}}/api/bookings/5
 GET {{host}}/api/bookings/6
 
 ### Update booking
-PUT {{host}}/api/bookings/6
+PUT {{host}}/api/bookings/7
 
 Content-Type: application/json
 
 {
-    "date": "2024-11-25 10:10:10",
-    "startTime": "11:00:00",
-    "duration": 50,
+    "date": "2024-11-28T10:10:10.000Z",
+    "startTime": "10:00:00",
+    "duration": 40,
     "status": "confirmed",
-    "totalPrice": 20,
-    "teacherId": 1,
-    "studentId": 2
+    "totalPrice": 30,
+    "studentId": 2,
+    "teacherId": 1    
 }
-
-
-
-
-
-
 
 ### Get reviews from teacher
 GET {{host}}/api/reviews/teacher/1
@@ -139,44 +133,3 @@ Content-Type: application/json
 
 ### Delete review
 DELETE {{host}}/api/reviews/1
-
-### Get student by id
-
-GET {{host}}/api/students/1
-
-### Update student
-PUT {{host}}/api/students/1
-
-Content-Type: application/json
-
-{
-    "name": "Enrique",
-    "surname": "Garcia",
-    "email": "
-}
-
-### Delete student
-DELETE {{host}}/api/students/1
-
-### Get teacher by id
-
-GET {{host}}/api/teachers/1
-
-### Update teacher
-PUT {{host}}/api/teachers/1
-
-Content-Type: application/json
-
-{
-    "name": "Enrique",
-    "surname": "Garcia",
-    "email": "enriquelopezgordillo@gmail.com",
-    "knowledge": "English",
-    "schedule": "Mañana",
-    "minPrice": 20,
-    "maxPrice": 100
-}
-
-### Delete teacher
-DELETE {{host}}/api/teachers/1
-

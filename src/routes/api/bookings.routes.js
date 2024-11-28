@@ -5,7 +5,8 @@ const {
   getAllBookingsBetweenStudentAndTeacher,
   createBooking,
   updateBooking,
-  deleteBooking
+  deleteBooking,
+  getBookingById
 } = require('../../controllers/bookings.controller');
 
 router.get('/student/:studentId', getAllBookingsFromStudent);
@@ -13,6 +14,8 @@ router.get('/student/:studentId', getAllBookingsFromStudent);
 router.get('/teacher/:teacherId', getAllBookingsFromTeacher);
 
 router.get('/between/', getAllBookingsBetweenStudentAndTeacher);
+
+router.get('/:id', getBookingById);
 
 router.post('/', createBooking);
 

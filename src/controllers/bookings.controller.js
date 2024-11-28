@@ -105,6 +105,42 @@ const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
   }
 };
 
+const getBookingById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const booking = await Booking.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Teacher,
+          as: 'teacher',
+          attributes: ['userId', 'price_p_hour', 'schedule'],
+          include: [
+            {
+              model: Knowledge,
+              as: 'knowledges',
+              attributes: ['name'],
+              through: { attributes: [] }
+            }
+          ]
+        }
+      ]
+    });
+
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking no encontrado' });
+    }
+
+    res.status(200).json(booking);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const createBooking = async (req, res) => {
   const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
   try {
@@ -163,5 +199,6 @@ module.exports = {
   getAllBookingsBetweenStudentAndTeacher,
   createBooking,
   updateBooking,
-  deleteBooking
+  deleteBooking,
+  getBookingById
 };

@@ -71,7 +71,6 @@ GET {{host}}/api/bookings/between?studentId=2&teacherId=1
 POST {{host}}/api/bookings/
 Content-Type: application/json
 
-
 {
     "date": "2024-11-28 09:00:00",
     "startTime": "10:00:00",
@@ -82,32 +81,28 @@ Content-Type: application/json
     "teacherId": 1
 }
 
-
 ### Delete booking
 DELETE {{host}}/api/bookings/5
 
-
-
-
-
-
-
-
 ### Get booking by id
-GET {{host}}/api/bookings/1
+GET {{host}}/api/bookings/6
 
 ### Update booking
-PUT {{host}}/api/bookings/1
+PUT {{host}}/api/bookings/6
 
 Content-Type: application/json
 
 {
     "date": "2024-11-25 10:10:10",
-    "duration": 1,
-    "price": 20,
+    "startTime": "11:00:00",
+    "duration": 50,
+    "status": "confirmed",
+    "totalPrice": 20,
     "teacherId": 1,
     "studentId": 2
 }
+
+
 
 
 

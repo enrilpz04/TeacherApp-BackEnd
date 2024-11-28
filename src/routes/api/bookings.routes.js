@@ -8,7 +8,7 @@ const {
   deleteBooking
 } = require('../../controllers/bookings.controller');
 
-router.get('/user/:studentId', getAllBookingsFromStudent);
+router.get('/student/:studentId', getAllBookingsFromStudent);
 
 router.get('/teacher/:teacherId', getAllBookingsFromTeacher);
 

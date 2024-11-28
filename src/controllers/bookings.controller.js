@@ -1,4 +1,4 @@
-const { Booking, Teacher, User } = require('../models');
+const { Booking, Teacher, User, Knowledge } = require('../models');
 const sequelize = require('../config/db.js');
 const { Op } = require('sequelize');
 
@@ -17,7 +17,15 @@ const getAllBookingsFromStudent = async (req, res) => {
         {
           model: Teacher,
           as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule', 'knowledges']
+          attributes: ['userId', 'price_p_hour', 'schedule'],
+            include: [ 
+            {
+              model: Knowledge,
+              as: 'knowledges',
+              attributes: ['name'],
+              through: { attributes: [] } 
+            }
+          ]      
         }
       ],
       order: [['date', 'DESC']]
@@ -43,7 +51,15 @@ const getAllBookingsFromTeacher = async (req, res) => {
         {
           model: Teacher,
           as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule', 'knowledges']
+          attributes: ['userId', 'price_p_hour', 'schedule'],
+            include: [ 
+            {
+              model: Knowledge,
+              as: 'knowledges',
+              attributes: ['name'],
+              through: { attributes: [] } 
+            }
+          ]      
         }
       ],
       order: [['date', 'DESC']]
@@ -56,8 +72,8 @@ const getAllBookingsFromTeacher = async (req, res) => {
 
 // Método para obtener todos los bookings de un profesor y un estudiante
 const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
-  const { studentId } = req.params;
-  const { teacherId } = req.params;
+  const studentId = req.query.studentId;
+  const teacherId = req.query.teacherId;
   try {
     const bookings = await Booking.findAll({
       where: { studentId: studentId, teacherId: teacherId },
@@ -70,7 +86,15 @@ const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
         {
           model: Teacher,
           as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule', 'knowledges']
+          attributes: ['userId', 'price_p_hour', 'schedule'],
+            include: [ 
+            {
+              model: Knowledge,
+              as: 'knowledges',
+              attributes: ['name'],
+              through: { attributes: [] } 
+            }
+          ]      
         }
       ],
       order: [['date', 'DESC']]

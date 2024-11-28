@@ -105,6 +105,7 @@ const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
   }
 };
 
+// Método para obtener un booking por su ID
 const getBookingById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -141,6 +142,7 @@ const getBookingById = async (req, res) => {
   }
 };
 
+// Método para crear un nuevo booking
 const createBooking = async (req, res) => {
   const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
   try {
@@ -159,12 +161,24 @@ const createBooking = async (req, res) => {
   }
 }
 
+// Método para actualizar un booking existente
 const updateBooking = async (req, res) => {  
   const { id } = req.params;
   const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
+  
+  console.log(`Intentando actualizar Booking con id: ${id}`);
+  
   try {
-    const booking = await Booking.update({
-      id,
+    // Buscar el booking por ID
+    const booking = await Booking.findByPk(id);
+    if (!booking) {
+      console.log(`Booking con id: ${id} no encontrado`);
+      return res.status(404).json({ error: 'Booking no encontrado' });
+    }
+
+    console.log(`Actualizando Booking con id: ${id}`);
+    // Actualizar los campos del booking
+    await booking.update({
       date,
       startTime,
       duration,
@@ -173,12 +187,41 @@ const updateBooking = async (req, res) => {
       studentId,
       teacherId
     });
-    res.status(201).json(booking);
+
+    // Obtener el booking actualizado con las asociaciones
+    const updatedBooking = await Booking.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Teacher,
+          as: 'teacher',
+          attributes: ['id', 'price_p_hour', 'schedule'],
+          include: [
+            {
+              model: Knowledge,
+              as: 'knowledges',
+              attributes: ['id', 'name'],
+              through: { attributes: [] }
+            }
+          ]
+        }
+      ]
+    });
+
+    console.log(`Booking actualizado correctamente: ${JSON.stringify(updatedBooking)}`);
+    res.status(200).json(updatedBooking);
+    
   } catch (error) {
+    console.error(`Error al actualizar booking: ${error.message}`);
     res.status(500).json({ error: error.message });
   }
-}
+};
 
+// Método para eliminar un booking
 const deleteBooking = async (req, res) => {
   const { id } = req.params;
   try {

@@ -1,247 +1,160 @@
-const { Booking, Teacher, User, Knowledge } = require('../models');
+const { Review, Teacher, User } = require('../models');
 const sequelize = require('../config/db.js');
 const { Op } = require('sequelize');
 
-// Método para obtener todos los bookings de un estudiante
-const getAllBookingsFromStudent = async (req, res) => {
+// Método para obtener todas las reviews de un profesor específico
+const getReviewsByTeacher = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const reviews = await Review.findAll({
+      where: { teacherId: id },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        }
+      ],
+      order: [['date', 'DESC']]
+    });
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Método para obtener todas las reviews de un estudiante específico
+const getReviewsByStudent = async (req, res) => {
   const { studentId } = req.params;
   try {
-    const bookings = await Booking.findAll({
-      where: { studentId: studentId },
+    const reviews = await Review.findAll({
+      where: { studentId },
       include: [
-        {
-          model: User,
-          as: 'student',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
-        },
         {
           model: Teacher,
           as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule'],
-            include: [ 
-            {
-              model: Knowledge,
-              as: 'knowledges',
-              attributes: ['name'],
-              through: { attributes: [] } 
-            }
-          ]      
+          attributes: ['id', 'description', 'schedule']
         }
       ],
       order: [['date', 'DESC']]
     });
-    res.status(200).json(bookings);
+    res.status(200).json(reviews);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Método para obtener todos los bookings de un profesor
-const getAllBookingsFromTeacher = async (req, res) => {
-  const { teacherId } = req.params;
+// Método para obtener todas las reviews entre un estudiante y un profesor
+const getAllReviewsBetweenStudentAndTeacher = async (req, res) => {
+  const { studentId, teacherId } = req.query;
   try {
-    const bookings = await Booking.findAll({
-      where: { teacherId: teacherId },
+    const reviews = await Review.findAll({
+      where: { studentId, teacherId },
       include: [
         {
           model: User,
-          as: 'student',
+          as: 'user',
           attributes: ['id', 'name', 'surname', 'email', 'rol']
         },
         {
           model: Teacher,
           as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule'],
-            include: [ 
-            {
-              model: Knowledge,
-              as: 'knowledges',
-              attributes: ['name'],
-              through: { attributes: [] } 
-            }
-          ]      
+          attributes: ['id', 'description', 'schedule']
         }
       ],
       order: [['date', 'DESC']]
     });
-    res.status(200).json(bookings);
+    res.status(200).json(reviews);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Método para obtener todos los bookings de un profesor y un estudiante
-const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
-  const studentId = req.query.studentId;
-  const teacherId = req.query.teacherId;
-  try {
-    const bookings = await Booking.findAll({
-      where: { studentId: studentId, teacherId: teacherId },
-      include: [
-        {
-          model: User,
-          as: 'student',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
-        },
-        {
-          model: Teacher,
-          as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule'],
-            include: [ 
-            {
-              model: Knowledge,
-              as: 'knowledges',
-              attributes: ['name'],
-              through: { attributes: [] } 
-            }
-          ]      
-        }
-      ],
-      order: [['date', 'DESC']]
-    });
-    res.status(200).json(bookings);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// Método para obtener un booking por su ID
-const getBookingById = async (req, res) => {
+// Método para obtener una review por su ID
+const getReviewById = async (req, res) => {
   const { id } = req.params;
   try {
-    const booking = await Booking.findByPk(id, {
+    const review = await Review.findByPk(id, {
       include: [
         {
           model: User,
-          as: 'student',
+          as: 'user',
           attributes: ['id', 'name', 'surname', 'email', 'rol']
         },
         {
           model: Teacher,
           as: 'teacher',
-          attributes: ['userId', 'price_p_hour', 'schedule'],
-          include: [
-            {
-              model: Knowledge,
-              as: 'knowledges',
-              attributes: ['name'],
-              through: { attributes: [] }
-            }
-          ]
+          attributes: ['id', 'description', 'schedule']
         }
       ]
     });
-
-    if (!booking) {
-      return res.status(404).json({ error: 'Booking no encontrado' });
+    if (review) {
+      res.status(200).json(review);
+    } else {
+      res.status(404).json({ message: 'Review not found' });
     }
-
-    res.status(200).json(booking);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Método para crear un nuevo booking
-const createBooking = async (req, res) => {
-  const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
+// Método para crear una nueva review
+const createReview = async (req, res) => {
+  const { rating, comment, studentId, teacherId } = req.body;
   try {
-    const booking = await Booking.create({
-      date,
-      startTime,
-      duration,
-      status,
-      totalPrice,
+    const newReview = await Review.create({
+      rating,
+      comment,
       studentId,
       teacherId
     });
-    res.status(201).json(booking);
+    res.status(201).json(newReview);
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
-
-// Método para actualizar un booking existente
-const updateBooking = async (req, res) => {  
-  const { id } = req.params;
-  const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
-  
-  console.log(`Intentando actualizar Booking con id: ${id}`);
-  
-  try {
-    // Buscar el booking por ID
-    const booking = await Booking.findByPk(id);
-    if (!booking) {
-      console.log(`Booking con id: ${id} no encontrado`);
-      return res.status(404).json({ error: 'Booking no encontrado' });
-    }
-
-    console.log(`Actualizando Booking con id: ${id}`);
-    // Actualizar los campos del booking
-    await booking.update({
-      date,
-      startTime,
-      duration,
-      status,
-      totalPrice,
-      studentId,
-      teacherId
-    });
-
-    // Obtener el booking actualizado con las asociaciones
-    const updatedBooking = await Booking.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: 'student',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
-        },
-        {
-          model: Teacher,
-          as: 'teacher',
-          attributes: ['id', 'price_p_hour', 'schedule'],
-          include: [
-            {
-              model: Knowledge,
-              as: 'knowledges',
-              attributes: ['id', 'name'],
-              through: { attributes: [] }
-            }
-          ]
-        }
-      ]
-    });
-
-    console.log(`Booking actualizado correctamente: ${JSON.stringify(updatedBooking)}`);
-    res.status(200).json(updatedBooking);
-    
-  } catch (error) {
-    console.error(`Error al actualizar booking: ${error.message}`);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Método para eliminar un booking
-const deleteBooking = async (req, res) => {
+// Método para actualizar una review existente
+const updateReview = async (req, res) => {
+  const { id } = req.params;
+  const { rating, comment } = req.body;
+  try {
+    const review = await Review.findByPk(id);
+    if (review) {
+      review.rating = rating !== undefined ? rating : review.rating;
+      review.comment = comment !== undefined ? comment : review.comment;
+      await review.save();
+      res.status(200).json(review);
+    } else {
+      res.status(404).json({ message: 'Review not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Método para eliminar una review
+const deleteReview = async (req, res) => {
   const { id } = req.params;
   try {
-    const booking = await Booking.findByPk(id);
-    if (!booking) {
-      return res.status(404).json({ message: 'Booking no encontrado' });
+    const review = await Review.findByPk(id);
+    if (review) {
+      await review.destroy();
+      res.status(200).json({ message: 'Review deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Review not found' });
     }
-    await booking.destroy();
-    res.status(200).json({ message: 'Booking eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
 module.exports = {
-  getAllBookingsFromStudent,
-  getAllBookingsFromTeacher,
-  getAllBookingsBetweenStudentAndTeacher,
-  createBooking,
-  updateBooking,
-  deleteBooking,
-  getBookingById
+  getReviewsByTeacher,
+  getReviewsByStudent,
+  getAllReviewsBetweenStudentAndTeacher,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview
 };

@@ -1,34 +1,33 @@
 const router = require('express').Router();
 const {
-  getAllBookingsFromStudent,
-  getAllBookingsFromTeacher,
-  getAllBookingsBetweenStudentAndTeacher,
-  createBooking,
-  updateBooking,
-  deleteBooking,
-  getBookingById
-} = require('../../controllers/bookings.controller');
+  getReviewsByTeacher,
+  getReviewsByStudent,
+  getAllReviewsBetweenStudentAndTeacher,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview
+} = require('../../controllers/reviews.controller');
 
-// Obtener todos los bookings de un estudiante
-router.get('/student/:studentId', getAllBookingsFromStudent);
+// Obtener todas las reviews de un profesor específico
+router.get('/teacher/:id', getReviewsByTeacher);
 
-// Obtener todos los bookings de un profesor
-router.get('/teacher/:teacherId', getAllBookingsFromTeacher);
+// Obtener todas las reviews de un estudiante específico
+router.get('/student/:id', getReviewsByStudent);
 
-// Obtener todos los bookings entre un estudiante y un profesor
-router.get('/between/', getAllBookingsBetweenStudentAndTeacher);
+// Obtener todas las reviews entre un estudiante y un profesor
+router.get('/between', getAllReviewsBetweenStudentAndTeacher);
 
-// Obtener un booking por su ID
-router.get('/:id', getBookingById);
+// Obtener una review por su ID
+router.get('/:id', getReviewById);
 
-// Crear un nuevo booking
-router.post('/', createBooking);
+// Crear una nueva review
+router.post('/', createReview);
 
-// Actualizar un booking existente
-router.put('/:id', updateBooking);
+// Actualizar una review existente
+router.put('/:id', updateReview);
 
-// Eliminar un booking
-router.delete('/:id', deleteBooking);
-
+// Eliminar una review
+router.delete('/:id', deleteReview);
 
 module.exports = router;

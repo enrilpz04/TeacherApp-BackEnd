@@ -4,3 +4,5 @@
 /.env
 /.vscode
 .env
+# Ignorar archivos de espacio de trabajo de VS Code
+*.code-workspace

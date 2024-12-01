@@ -33,7 +33,8 @@ const User = sequelize.define('User', {
   },
   rol: {
     type: DataTypes.ENUM('admin', 'student', 'teacher'),
-    allowNull: false
+    allowNull: false,
+    defaultValue: 'student' // Valor por defecto, si aplica
   }
 }, {
   tableName: 'users',

@@ -6,7 +6,9 @@ const {
   createTeacher,
   updateTeacher,
   deleteTeacher,
-  getAllTeachersByLocation
+  getAllTeachersByLocation,
+  addKnowledgeToTeacher,
+  removeKnowledgeFromTeacher
 } = require('../../controllers/teachers.controller');
 
 router.get('/', getAllTeachers);
@@ -19,5 +21,10 @@ router.delete('/:id', deleteTeacher);
 router.post('/filter', getFilteredTeachers);
 router.post('/location', getAllTeachersByLocation);
 
+// Agregar un conocimiento a un profesor
+router.post('/:teacherId/knowledges/:knowledgeId', addKnowledgeToTeacher);
+
+// Eliminar un conocimiento de un profesor
+router.delete('/:teacherId/knowledges/:knowledgeId', removeKnowledgeFromTeacher);
 
 module.exports = router;

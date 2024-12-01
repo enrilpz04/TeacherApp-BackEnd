@@ -55,5 +55,128 @@ Content-Type: application/json
     "recipientId": 2
 }
 
-### Deletion of message
-DELETE {{host}}/api/messages/5
+### Delete message
+DELETE {{host}}/api/messages/7
+
+### Get bookings from teacher
+GET {{host}}/api/bookings/teacher/1
+
+### Get bookings from student
+GET {{host}}/api/bookings/student/4
+
+### Get bookings between student and teacher
+GET {{host}}/api/bookings/between?studentId=2&teacherId=1
+
+### Create booking
+POST {{host}}/api/bookings/
+Content-Type: application/json
+
+{
+    "date": "2024-11-28 09:00:00",
+    "startTime": "10:00:00",
+    "duration": 60,
+    "status": "confirmed",
+    "totalPrice": 30,
+    "studentId": 2,
+    "teacherId": 1
+}
+
+### Delete booking
+DELETE {{host}}/api/bookings/5
+
+### Get booking by id
+GET {{host}}/api/bookings/6
+
+### Update booking
+PUT {{host}}/api/bookings/6
+
+Content-Type: application/json
+
+{
+    "date": "2024-11-25 10:10:10",
+    "startTime": "11:00:00",
+    "duration": 50,
+    "status": "confirmed",
+    "totalPrice": 20,
+    "teacherId": 1,
+    "studentId": 2
+}
+
+
+
+
+
+
+
+### Get reviews from teacher
+GET {{host}}/api/reviews/teacher/1
+
+### Create review
+POST {{host}}/api/reviews/
+Content-Type: application/json
+
+{
+    "rating": 5,
+    "comment": "Great teacher",
+    "teacherId": 1,
+    "studentId": 2
+}
+
+### Get review by id
+GET {{host}}/api/reviews/1
+
+### Update review
+PUT {{host}}/api/reviews/1
+
+Content-Type: application/json
+
+{
+    "rating": 5,
+    "comment": "Great teacher",
+    "teacherId": 1,
+    "studentId": 2
+}
+
+### Delete review
+DELETE {{host}}/api/reviews/1
+
+### Get student by id
+
+GET {{host}}/api/students/1
+
+### Update student
+PUT {{host}}/api/students/1
+
+Content-Type: application/json
+
+{
+    "name": "Enrique",
+    "surname": "Garcia",
+    "email": "
+}
+
+### Delete student
+DELETE {{host}}/api/students/1
+
+### Get teacher by id
+
+GET {{host}}/api/teachers/1
+
+### Update teacher
+PUT {{host}}/api/teachers/1
+
+Content-Type: application/json
+
+{
+    "name": "Enrique",
+    "surname": "Garcia",
+    "email": "enriquelopezgordillo@gmail.com",
+    "knowledge": "English",
+    "schedule": "Mañana",
+    "minPrice": 20,
+    "maxPrice": 100
+}
+
+### Delete teacher
+DELETE {{host}}/api/teachers/1
+

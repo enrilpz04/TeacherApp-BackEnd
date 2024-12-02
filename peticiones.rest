@@ -105,7 +105,7 @@ DELETE {{host}}/api/bookings/5
 
 
 ### Get booking by id
-GET {{host}}/api/bookings/6
+GET {{host}}/api/bookings/1
 
 
 ### Update booking
@@ -160,7 +160,7 @@ Content-Type: application/json
 
 
 ### Get review by id
-GET {{host}}/api/reviews/1
+GET {{host}}/api/reviews/teacher/1
 
 
 ### Update review

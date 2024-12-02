@@ -70,6 +70,25 @@ const getAllBookingsFromTeacher = async (req, res) => {
   }
 };
 
+const getAllBookingsFromTeacherAndDate = async (req, res) => {
+  const teacherId = req.query.teacherId;
+  const date = req.query.date;
+  try {
+    const bookings = await Booking.findAll({
+      where: {
+         teacherId: teacherId,
+          date: {
+            [Op.eq]: sequelize.literal(`DATE('${date}')`)
+          }
+        },
+      order: [['date', 'DESC']]
+    });
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Método para obtener todos los bookings de un profesor y un estudiante
 const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
   const studentId = req.query.studentId;
@@ -144,7 +163,7 @@ const getBookingById = async (req, res) => {
 
 // Método para crear un nuevo booking
 const createBooking = async (req, res) => {
-  const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
+  const { date, startTime, duration, status, totalPrice, student, teacher } = req.body;
   try {
     const booking = await Booking.create({
       date,
@@ -152,8 +171,8 @@ const createBooking = async (req, res) => {
       duration,
       status,
       totalPrice,
-      studentId,
-      teacherId
+      studentId: student.id,
+      teacherId: teacher.id
     });
     res.status(201).json(booking);
   } catch (error) {
@@ -239,6 +258,7 @@ const deleteBooking = async (req, res) => {
 module.exports = {
   getAllBookingsFromStudent,
   getAllBookingsFromTeacher,
+  getAllBookingsFromTeacherAndDate,
   getAllBookingsBetweenStudentAndTeacher,
   createBooking,
   updateBooking,

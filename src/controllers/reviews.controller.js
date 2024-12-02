@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 
 // Método para obtener todas las reviews de un profesor específico
 const getReviewsByTeacher = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // Cambio aquí
   try {
     const reviews = await Review.findAll({
       where: { teacherId: id },
@@ -12,7 +12,12 @@ const getReviewsByTeacher = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email']
+        },
+        {
+          model: Teacher,
+          as: 'teacher',
+          attributes: ['id', 'description']
         }
       ],
       order: [['date', 'DESC']]

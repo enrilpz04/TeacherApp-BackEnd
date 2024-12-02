@@ -58,19 +58,15 @@ User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
 
 // Reviews y Usuarios y Teachers (opcion 2)
 Review.belongsTo(User, { 
-  foreignKey: "studentId", 
-  as: "student",
-  onDelete: 'CASCADE', // Asegúrate de que coincide con el modelo
-  onUpdate: 'CASCADE'
+  foreignKey: "userId", 
+  as: "user"
 });
 Review.belongsTo(Teacher, { 
   foreignKey: "teacherId", 
-  as: "teacher",
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE'
+  as: "teacher"
 });
 User.hasMany(Review, { 
-  foreignKey: 'studentId', 
+  foreignKey: 'userId', 
   as: 'reviews',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE'

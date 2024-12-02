@@ -12,7 +12,7 @@ const Teacher = sequelize.define('Teacher', {
     allowNull: false
   },
   schedule: {
-    type: DataTypes.ENUM('Mañana', 'Tarde', 'Noche'),
+    type: DataTypes.ENUM('Morning', 'Afternoon', 'Night'),
     allowNull: false
   },
   price_p_hour: {

@@ -23,26 +23,6 @@ const Review = sequelize.define('Review', {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW
-  },
-  userId: { // Aquí está 'studentId' renombrado a 'userId'
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-          model: 'users',
-          key: 'id'
-      },
-    onDelete: 'CASCADE', // Ajusta según tus necesidades
-    onUpdate: 'CASCADE'
-  },
-  teacherId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-          model: 'teachers',
-          key: 'id'
-      },
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
   }
 }, {
   tableName: 'reviews',

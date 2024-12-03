@@ -26,24 +26,6 @@ const Booking = sequelize.define('Booking', {
     totalPrice: {
       type: DataTypes.FLOAT,
       allowNull: false
-    },
-    studentId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'users', // Nombre de la tabla referenciada
-        key: 'id'
-      },
-      onDelete: 'CASCADE'
-    },
-    teacherId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'teachers', // Nombre de la tabla referenciada
-        key: 'id'
-      },
-      onDelete: 'CASCADE'
     }
   }, {
     tableName: 'bookings',

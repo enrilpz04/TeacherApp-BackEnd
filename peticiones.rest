@@ -30,8 +30,8 @@ Content-Type: application/json
 {
     "name": "Enrique",
     "surname": "Garcia",
-    "email": "enriquelopezgordillo@gmail.com",
-    "password": "123456",
+    "email": "enriquelopezgordill@gmail.com",
+    "password": "12345678",
     "rol": "teacher"
 }
 
@@ -63,8 +63,8 @@ Content-Type: application/json
 {
     "text": "Test message",
     "date": "2024-11-25 10:10:10",
-    "senderId": 1,
-    "recipientId": 2
+    "senderId": 7,
+    "recipientId": 7
 }
 
 

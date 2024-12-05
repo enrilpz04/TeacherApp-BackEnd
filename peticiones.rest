@@ -4,6 +4,25 @@
 ### Obtener todos los teachers
 GET {{host}}/api/teachers
 
+### Obtener teacher por user ID
+GET {{host}}/api/teachers/user/1
+
+### Crear teacher
+POST {{host}}/api/teachers
+Content-Type: application/json
+
+{
+  "description": "I am a passionate Python developer with a love for teaching. I have worked on various projects ranging from web development to data science.",
+  "schedule": "Morning",
+  "price_p_hour": 30.0,
+  "experience": "5 years in Python",
+  "rating": 4.5,
+  "validated": true,
+  "latitude": "40.7128",
+  "longitude": "-74.0060",
+  "userId": 1
+}
+
 
 ### Filtrar teachers
 POST {{host}}/api/teachers/filter
@@ -30,9 +49,9 @@ Content-Type: application/json
 {
     "name": "Enrique",
     "surname": "Garcia",
-    "email": "enriquelopezgordill@gmail.com",
+    "email": "enriquelopezgordil@gmail.com",
     "password": "12345678",
-    "rol": "teacher"
+    "rol": "student"
 }
 
 
@@ -73,11 +92,11 @@ DELETE {{host}}/api/messages/7
 
 
 ### Get bookings from teacher
-GET {{host}}/api/bookings/teacher/1
+GET {{host}}/api/bookings/teacher/4
 
 
 ### Get bookings from student
-GET {{host}}/api/bookings/student/4
+GET {{host}}/api/bookings/student/13
 
 
 ### Get bookings between student and teacher
@@ -95,8 +114,8 @@ Content-Type: application/json
     "duration": 60,
     "status": "confirmed",
     "totalPrice": 30,
-    "studentId": 2,
-    "teacherId": 1
+    "studentId": 13,
+    "teacherId": 4
 }
 
 

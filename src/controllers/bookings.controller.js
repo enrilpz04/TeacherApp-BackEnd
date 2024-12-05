@@ -64,6 +64,7 @@ const getAllBookingsFromTeacher = async (req, res) => {
       ],
       order: [['date', 'DESC']]
     });
+    console.log(bookings);
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -163,7 +164,7 @@ const getBookingById = async (req, res) => {
 
 // Método para crear un nuevo booking
 const createBooking = async (req, res) => {
-  const { date, startTime, duration, status, totalPrice, student, teacher } = req.body;
+  const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
   try {
     const booking = await Booking.create({
       date,
@@ -171,8 +172,8 @@ const createBooking = async (req, res) => {
       duration,
       status,
       totalPrice,
-      studentId: student.id,
-      teacherId: teacher.id
+      studentId: studentId,
+      teacherId: teacherId
     });
     res.status(201).json(booking);
   } catch (error) {

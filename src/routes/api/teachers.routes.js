@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {
   getAllTeachers,
   getTeacherById,
+  getTeacherByUserId,
   getFilteredTeachers,
   createTeacher,
   updateTeacher,
@@ -17,6 +18,7 @@ router.post('/', createTeacher);
 router.put('/:id', updateTeacher);
 router.get('/:id', getTeacherById);
 router.delete('/:id', deleteTeacher);
+router.get('/user/:userId', getTeacherByUserId);
 
 router.post('/filter', getFilteredTeachers);
 router.post('/location', getAllTeachersByLocation);

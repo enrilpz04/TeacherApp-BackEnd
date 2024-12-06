@@ -90,6 +90,55 @@ const getAllBookingsFromTeacherAndDate = async (req, res) => {
   }
 }
 
+const getAllBokingsByTeacherIdDateAndStatus = async (req, res) => {
+  const { teacherId, date, status } = req.query;
+  console.log(status)
+
+  if (!teacherId) {
+    return res.status(400).json({ error: 'Missing required query parameter: teacherId' });
+  }
+
+  try {
+    const whereClause = { teacherId };
+
+    if (date) {
+      whereClause[Op.and] = sequelize.where(sequelize.fn('DATE', sequelize.col('date')), date);
+    }
+
+    if (status) {
+      whereClause.status = status;
+    }
+
+    const bookings = await Booking.findAll({
+      where: whereClause,
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Teacher,
+          as: 'teacher',
+          attributes: ['id', 'userId', 'price_p_hour', 'schedule'],
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['id', 'name', 'surname', 'email']
+            }
+          ]
+        }
+      ],
+      order: [['date', 'DESC']]
+    });
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Método para obtener todos los bookings de un profesor y un estudiante
 const getAllBookingsBetweenStudentAndTeacher = async (req, res) => {
   const studentId = req.query.studentId;
@@ -164,7 +213,7 @@ const getBookingById = async (req, res) => {
 
 // Método para crear un nuevo booking
 const createBooking = async (req, res) => {
-  const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
+  const { date, startTime, duration, status, totalPrice, student, teacher } = req.body;
   try {
     const booking = await Booking.create({
       date,
@@ -172,8 +221,8 @@ const createBooking = async (req, res) => {
       duration,
       status,
       totalPrice,
-      studentId: studentId,
-      teacherId: teacherId
+      studentId: student.id,
+      teacherId: teacher.id
     });
     res.status(201).json(booking);
   } catch (error) {
@@ -261,6 +310,7 @@ module.exports = {
   getAllBookingsFromTeacher,
   getAllBookingsFromTeacherAndDate,
   getAllBookingsBetweenStudentAndTeacher,
+  getAllBokingsByTeacherIdDateAndStatus,
   createBooking,
   updateBooking,
   deleteBooking,

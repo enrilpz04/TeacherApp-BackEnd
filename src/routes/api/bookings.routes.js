@@ -4,6 +4,7 @@ const {
   getAllBookingsFromTeacher,
   getAllBookingsFromTeacherAndDate,
   getAllBookingsBetweenStudentAndTeacher,
+  getAllBokingsByTeacherIdDateAndStatus,
   createBooking,
   updateBooking,
   deleteBooking,
@@ -26,6 +27,8 @@ router.get('/:id', getBookingById);
 
 // Crear un nuevo booking
 router.post('/', createBooking);
+router.get('/teacher/status/date/', getAllBokingsByTeacherIdDateAndStatus);
+
 
 // Actualizar un booking existente
 router.put('/:id', updateBooking);

@@ -9,7 +9,7 @@ const Notification = sequelize.define('Notification', {
     primaryKey: true
   },
   type: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('new_teacher', 'teacher_validation', 'new_booking', 'booking_confirmed', 'booking_cancelled', 'new_message', 'new_review'),
     allowNull: false
   },
   message: {
@@ -20,20 +20,10 @@ const Notification = sequelize.define('Notification', {
     type: DataTypes.DATE,
     allowNull: false
   },
-  read: {
+  watched: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
-  },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'users',
-      key: 'id'
-    },
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE'
   }
 }, {
   tableName: 'notifications',

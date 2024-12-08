@@ -13,24 +13,47 @@ const Booking = require("./bookings.model");
 const Review = require("./reviews.model");
 
 
-// Definir asociaciones
-
-// Usuario y Booking
+// Conexiones de la tabla User
 User.hasMany(Booking, { foreignKey: 'studentId', as: 'studentBookings' });
-Booking.belongsTo(User, { foreignKey: 'studentId', as: 'student' });
+User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
+User.hasMany(Review, { 
+  foreignKey: 'userId', 
+  as: 'reviews',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
 
-// Teacher y Booking
+// Conexiones de la tabla teacher
 Teacher.hasMany(Booking, { foreignKey: 'teacherId', as: 'teacherBookings' });
-Booking.belongsTo(Teacher, { foreignKey: 'teacherId', as: 'teacher' });
 Teacher.belongsTo(User, { foreignKey: "userId", as: "user" });
-
-// Asociaciones many-to-many entre Teacher y Knowledge
 Teacher.belongsToMany(Knowledge, {
   through: "TeacherKnowledge",
   as: "knowledges",
   foreignKey: 'teacherId',
   otherKey: 'knowledgeId'
 });
+Teacher.hasMany(Review, { 
+  foreignKey: 'teacherId', 
+  as: 'reviews',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+
+// Conexiones de la tabla Booking
+Booking.belongsTo(User, { foreignKey: 'studentId', as: 'student' });
+Booking.belongsTo(Teacher, { foreignKey: 'teacherId', as: 'teacher' });
+
+// Conexiones de la tabla Review
+Review.belongsTo(User, { 
+  foreignKey: "userId", 
+  as: "user"
+});
+Review.belongsTo(Teacher, { 
+  foreignKey: "teacherId", 
+  as: "teacher"
+});
+
+// Conexiones de la tabla Knowledge
 Knowledge.belongsToMany(Teacher, {
   through: "TeacherKnowledge",
   as: "teachers",
@@ -38,7 +61,7 @@ Knowledge.belongsToMany(Teacher, {
   otherKey: 'teacherId'
 });
 
-// Mensajes y usuarios
+// Conexiones de la tabla Messages
 Message.belongsTo(User, { 
   foreignKey: "senderId", 
   as: "sender",
@@ -52,31 +75,8 @@ Message.belongsTo(User, {
   onUpdate: 'CASCADE'
 });
 
-// Notificaciones y usuarios
+// Conexiones de la tabla Notifications
 Notification.belongsTo(User, { foreignKey: "userId", as: "user" });
-User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
-
-// Reviews y Usuarios y Teachers (opcion 2)
-Review.belongsTo(User, { 
-  foreignKey: "userId", 
-  as: "user"
-});
-Review.belongsTo(Teacher, { 
-  foreignKey: "teacherId", 
-  as: "teacher"
-});
-User.hasMany(Review, { 
-  foreignKey: 'userId', 
-  as: 'reviews',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE'
-});
-Teacher.hasMany(Review, { 
-  foreignKey: 'teacherId', 
-  as: 'reviews',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE'
-});
 
 module.exports = {
   sequelize,
@@ -89,13 +89,3 @@ module.exports = {
   Booking,
   Review,
 };
-
-// Revisión de Todas las Asociaciones:
-
-// User y Booking:Un usuario puede tener múltiples bookings como estudiante.
-// Teacher y Booking: Un profesor puede tener múltiples bookings.
-// Teacher y User: Un profesor está vinculado a un usuario (probablemente para autenticación).
-  // Teacher y Knowledge: Relación many-to-many entre profesores y conocimientos.
-// Message y User: Los mensajes tienen un sender y un recipient, ambos usuarios.
-// Notification y User: Las notificaciones están vinculadas a usuarios.
-// Review y User/Teacher: Las reviews están vinculadas a un usuario (estudiante) y a un profesor.

@@ -14,6 +14,18 @@ const getAllMessagesBetweenUsers = async (req, res) => {
           { senderId: userId2, recipientId: userId1 }
         ]
       },
+      include: [
+        {
+          model: User,
+          as: 'sender',
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
+        },
+        {
+          model: User,
+          as: 'recipient',
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
+        }
+      ],
       order: [['date', 'ASC']]
     });
 

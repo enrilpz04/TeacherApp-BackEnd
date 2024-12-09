@@ -19,14 +19,6 @@ const Message = sequelize.define('Message', {
   watched: {
     type: DataTypes.BOOLEAN,
     allowNull: false
-  },
-  senderId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  recipientId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
   }
 }, {
   tableName: 'messages',

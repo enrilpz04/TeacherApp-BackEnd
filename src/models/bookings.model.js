@@ -15,16 +15,8 @@ const Booking = sequelize.define('Booking', {
       type: DataTypes.TIME,
       allowNull: false
     },
-    duration: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     status: {
-      type: DataTypes.ENUM('pending', 'confirmed', 'cancelled', 'completed'),
-      allowNull: false
-    },
-    totalPrice: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.ENUM('pending', 'confirmed', 'cancelled', 'completed', 'archived'),
       allowNull: false
     }
   }, {

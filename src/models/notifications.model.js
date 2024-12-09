@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const User = require('./users.model');
 
 const Notification = sequelize.define('Notification', {
   id: {
@@ -8,18 +9,29 @@ const Notification = sequelize.define('Notification', {
     primaryKey: true
   },
   type: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM(
+      'new_teacher_registration',
+      'teacher_validation',
+      'booking_created',
+      'booking_confirmed',
+      'booking_cancelled',
+      'new_message',
+      'new_review',
+      'profile_updated',
+      'booking_status_change',
+      'upcoming_class'
+    ),
     allowNull: false
   },
   message: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
   date: {
     type: DataTypes.DATE,
     allowNull: false
   },
-  read: {
+  watched: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
@@ -28,5 +40,8 @@ const Notification = sequelize.define('Notification', {
   tableName: 'notifications',
   timestamps: false
 });
+
+// Definir la relación
+Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 module.exports = Notification;

@@ -13,8 +13,8 @@ const server = http.createServer(app);
 
 const PORT = process.env.PORT || 3000;
 
-// Sincroniza la base de datos y luego inicia el servidor
-sequelize.sync({ force: false })
+// Sincroniza la bas({ alter: true })e de datos y luego inicia el servidor
+sequelize.sync({})// Esta línea sincroniza los modelos sin eliminar datos
   .then(() => {
     server.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);

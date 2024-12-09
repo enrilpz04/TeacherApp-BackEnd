@@ -91,13 +91,13 @@ CREATE TABLE IF NOT EXISTS reviews (
   FOREIGN KEY (teacherId) REFERENCES teachers(id)
 );
 
--- Insertar datos de prueba en users
+-- Insertar datos de prueba en users (contraseña password123)
 INSERT INTO users (name, surname, email, password, avatar, rol) VALUES
-('John', 'Doe', 'john.doe@example.com', 'password123', NULL, 'teacher'),
-('Jane', 'Smith', 'jane.smith@example.com', 'password123', NULL, 'student'),
-('Alice', 'Johnson', 'alice.johnson@example.com', 'password123', NULL, 'teacher'),
-('Bob', 'Brown', 'bob.brown@example.com', 'password123', NULL, 'student'),
-('Charlie', 'Davis', 'charlie.davis@example.com', 'password123', NULL, 'teacher');
+('John', 'Doe', 'john.doe@example.com', '$2a$10$gHbkBm4c7XuVttddxFG.zuUPiPyMMNOnCKHt10iN1xV1B92nNesXG', NULL, 'teacher'),
+('Jane', 'Smith', 'jane.smith@example.com', '$2a$10$gHbkBm4c7XuVttddxFG.zuUPiPyMMNOnCKHt10iN1xV1B92nNesXG', NULL, 'student'),
+('Alice', 'Johnson', 'alice.johnson@example.com', '$2a$10$gHbkBm4c7XuVttddxFG.zuUPiPyMMNOnCKHt10iN1xV1B92nNesXG', NULL, 'teacher'),
+('Bob', 'Brown', 'bob.brown@example.com', '$2a$10$gHbkBm4c7XuVttddxFG.zuUPiPyMMNOnCKHt10iN1xV1B92nNesXG', NULL, 'student'),
+('Charlie', 'Davis', 'charlie.davis@example.com', '$2a$10$gHbkBm4c7XuVttddxFG.zuUPiPyMMNOnCKHt10iN1xV1B92nNesXG', NULL, 'teacher');
 
 -- Insertar datos de prueba en knowledges
 INSERT INTO knowledges (name) VALUES
@@ -146,3 +146,5 @@ INSERT INTO reviews (rating, comment, date, userId, teacherId) VALUES
 (4.5, 'Great teacher!', '2023-01-01 10:00:00', 2, 1),
 (4.7, 'Very knowledgeable.', '2023-01-02 11:00:00', 4, 2),
 (4.2, 'Good experience.', '2023-01-03 12:00:00', 2, 3);
+
+

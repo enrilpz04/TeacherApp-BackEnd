@@ -13,6 +13,11 @@ const Message = sequelize.define('Message', {
   },
   date: {
     type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  },
+  watched: {
+    type: DataTypes.BOOLEAN,
     allowNull: false
   },
   senderId: {

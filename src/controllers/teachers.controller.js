@@ -47,14 +47,43 @@ const getTeacherById = async (req, res) => {
   }
 };
 
+const getTeacherByUserId = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const teacher = await Teacher.findOne({
+      where: { userId },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'surname', 'email', 'rol']
+        },
+        {
+          model: Knowledge,
+          as: 'knowledges',
+          through: { attributes: [] } // Para excluir los atributos de la tabla intermedia
+        }
+      ]
+    });
+    res.status(200).json(teacher);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const createTeacher = async (req, res) => {
-  const { userId, price_p_hour, schedule, knowledges } = req.body;
+  const {  description, schedule, price_p_hour, experience, rating, validated, latitude, longitude, userId  } = req.body;
   try {
     const teacher = await Teacher.create({
-      userId,
-      price_p_hour,
+      description,
       schedule,
-      knowledges
+      price_p_hour,
+      experience,
+      rating,
+      validated,
+      latitude,
+      longitude,
+      userId,
     });
     res.status(201).json(teacher);
   } catch (error) {
@@ -195,12 +224,49 @@ const getAllTeachersByLocation = async (req, res) => {
   }
 }
 
+// Agregar un conocimiento a un profesor
+const addKnowledgeToTeacher = async (req, res) => {
+  const { teacherId, knowledgeId } = req.params;
+  try {
+    const teacher = await Teacher.findByPk(teacherId);
+    const knowledge = await Knowledge.findByPk(knowledgeId);
+    if (teacher && knowledge) {
+      await teacher.addKnowledge(knowledge);
+      res.json({ message: 'Conocimiento agregado al profesor correctamente' });
+    } else {
+      res.status(404).json({ message: 'Profesor o Conocimiento no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Eliminar un conocimiento de un profesor
+const removeKnowledgeFromTeacher = async (req, res) => {
+  const { teacherId, knowledgeId } = req.params;
+  try {
+    const teacher = await Teacher.findByPk(teacherId);
+    const knowledge = await Knowledge.findByPk(knowledgeId);
+    if (teacher && knowledge) {
+      await teacher.removeKnowledge(knowledge);
+      res.json({ message: 'Conocimiento eliminado del profesor correctamente' });
+    } else {
+      res.status(404).json({ message: 'Profesor o Conocimiento no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllTeachers,
   getTeacherById,
+  getTeacherByUserId,
   getFilteredTeachers,
   createTeacher,
   updateTeacher,
   deleteTeacher,
-  getAllTeachersByLocation
+  getAllTeachersByLocation,
+  addKnowledgeToTeacher,
+  removeKnowledgeFromTeacher
 };

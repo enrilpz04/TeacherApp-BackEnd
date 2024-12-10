@@ -54,6 +54,17 @@ Content-Type: application/json
     "rol": "student"
 }
 
+### Post a comment
+POST {{host}}/api/messages
+Content-Type: application/json
+
+{
+    "text" : "holaa",
+    "watched" : false,
+    "recipientId" : 1,
+    "senderId" : 11
+}
+
 
 ### Login
 POST {{host}}/api/auth/login

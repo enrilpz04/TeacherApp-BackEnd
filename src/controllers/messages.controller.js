@@ -59,17 +59,34 @@ const getLastMessagesByUser = async (req, res) => {
 
 // Método para crear un nuevo mensaje
 const createMessage = async (req, res) => {
-  const { text, senderId, recipientId } = req.body;
+  const { text, date, watched, sender, recipient } = req.body;
 
   try {
     const message = await Message.create({
       text,
-      senderId,
-      recipientId,
-      date: new Date()
+      date: new Date(),
+      watched,
+      senderId: sender.id,
+      recipientId: recipient.id,
+      
     });
 
-    res.status(201).json(message);
+    const fullMessage = await Message.findByPk(message.id, {
+      include: [
+        {
+          model: User,
+          as: 'sender',
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
+        },
+        {
+          model: User,
+          as: 'recipient',
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
+        }
+      ]
+    });
+
+    res.status(201).json(fullMessage);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

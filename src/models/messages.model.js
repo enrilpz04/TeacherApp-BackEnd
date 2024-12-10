@@ -18,7 +18,8 @@ const Message = sequelize.define('Message', {
   },
   watched: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    allowNull: false,
+    defaultValue: false
   }
 }, {
   tableName: 'messages',

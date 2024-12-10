@@ -54,6 +54,17 @@ Content-Type: application/json
     "rol": "student"
 }
 
+### Post a comment
+POST {{host}}/api/messages
+Content-Type: application/json
+
+{
+    "text" : "holaa",
+    "watched" : false,
+    "recipientId" : 1,
+    "senderId" : 11
+}
+
 
 ### Login
 POST {{host}}/api/auth/login
@@ -100,7 +111,10 @@ GET {{host}}/api/bookings/student/13
 
 
 ### Get bookings between student and teacher
-GET {{host}}/api/bookings/between?studentId=2&teacherId=1
+GET {{host}}/api/bookings/between?studentId=11&teacherId=1
+
+### Get chats from user
+GET {{host}}/api/messages/chats/6
 
 
 ### Create booking
@@ -148,8 +162,8 @@ Content-Type: application/json
 
 
 
-
-
+### GET messages between two users
+GET {{host}}/api/messages/between?userId1=11&userId2=20
 
 
 

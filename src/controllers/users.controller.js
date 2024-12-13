@@ -43,7 +43,7 @@ const updateStudent = async (req, res) => {
       student.name = name || student.name;
       student.surname = surname || student.surname;
       student.email = email || student.email;
-      student.validated = validated || student.validated;
+      student.validated = validated;
       student.avatar = avatar || student.avatar;
   
       await student.save();

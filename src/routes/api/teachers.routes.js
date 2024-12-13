@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {
   getAllTeachers,
+  getTeachersWithPagination,
   getTeacherById,
   getTeacherByUserId,
   getFilteredTeachers,
@@ -13,9 +14,10 @@ const {
 } = require('../../controllers/teachers.controller');
 
 router.get('/', getAllTeachers);
+router.get('/pagination', getTeachersWithPagination)
+router.put('/:id', updateTeacher);
 router.post('/', createTeacher);
 
-router.put('/:id', updateTeacher);
 router.get('/:id', getTeacherById);
 router.delete('/:id', deleteTeacher);
 router.get('/user/:userId', getTeacherByUserId);

@@ -24,6 +24,35 @@ const getAllTeachers = async (req, res) => {
   }
 };
 
+const getTeachersWithPagination = async (req, res) => {
+  const { page = 1, limit = 5 } = req.query;
+  const offset = (page - 1) * limit;
+
+  try {
+    const { count, rows } = await Teacher.findAndCountAll({
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      attributes: ['id', 'price_p_hour', 'schedule', 'validated'],
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'surname', 'email', 'validated', 'avatar', 'rol']
+        }
+      ]
+    });
+
+    res.status(200).json({
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
+      teachers: rows
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const getTeacherById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -91,23 +120,66 @@ const createTeacher = async (req, res) => {
   }
 }
 
+// Método para actualizar un profesor
 const updateTeacher = async (req, res) => {
   const { id } = req.params;
-  const { price_p_hour, schedule, knowledges } = req.body;
+  const { description, schedule, price_p_hour, experience, rating, validated, latitude, longitude, user } = req.body;
+
+  console.log(validated)
   try {
-    const teacher = await Teacher.findByPk(id);
+    const teacher = await Teacher.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'user'
+        }
+      ]
+    });
+
     if (!teacher) {
       return res.status(404).json({ message: 'Teacher no encontrado' });
     }
-    teacher.price_p_hour = price_p_hour;
-    teacher.schedule = schedule;
-    teacher.knowledges = knowledges;
+
+    // Actualizar los detalles del profesor
+    teacher.description = description || teacher.description;
+    teacher.schedule = schedule || teacher.schedule;
+    teacher.price_p_hour = price_p_hour || teacher.price_p_hour;
+    teacher.experience = experience || teacher.experience;
+    teacher.rating = rating || teacher.rating;
+    teacher.validated = validated;
+    teacher.latitude = latitude || teacher.latitude;
+    teacher.longitude = longitude || teacher.longitude;
+
+    // Actualizar los detalles del usuario
+    if (user) {
+      const userToUpdate = await User.findByPk(teacher.userId);
+      if (userToUpdate) {
+        userToUpdate.name = user.name || userToUpdate.name;
+        userToUpdate.surname = user.surname || userToUpdate.surname;
+        userToUpdate.email = user.email || userToUpdate.email;
+        userToUpdate.validated = user.validated || userToUpdate.validated;
+        userToUpdate.avatar = user.avatar || userToUpdate.avatar;
+        await userToUpdate.save();
+      }
+    }
+
     await teacher.save();
-    res.status(200).json(teacher);
+
+    const updatedTeacher = await Teacher.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'surname', 'email', 'validated', 'avatar', 'rol']
+        }
+      ]
+    });
+
+    res.status(200).json(updatedTeacher);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};
 
 const deleteTeacher = async (req, res) => {
   const { id } = req.params;
@@ -260,6 +332,7 @@ const removeKnowledgeFromTeacher = async (req, res) => {
 
 module.exports = {
   getAllTeachers,
+  getTeachersWithPagination,
   getTeacherById,
   getTeacherByUserId,
   getFilteredTeachers,

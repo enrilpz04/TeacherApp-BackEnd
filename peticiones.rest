@@ -38,7 +38,7 @@ Content-Type: application/json
 
 {
     "teacherId": 4,
-    "knowledgeId":2
+    "knowledgeId": 2
 }
 
 

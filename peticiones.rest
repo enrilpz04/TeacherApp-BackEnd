@@ -14,6 +14,34 @@ GET {{host}}/api/knowledges
 
 
 
+### Crear Teacher
+POST {{host}}/api/teacher
+Content-Type: application/json
+
+{
+    "description": "orem fistrum de la pradera amatomaa",
+    "schedule": "Mañana",
+    "price_p_hour": 30,
+    "experience": " Está la cosa muy malar quietooor quietooor por la gloria de mi madre
+     caballo blanco caballo negroorl hasta luego Lucas fistro.",
+     "rating": 2,
+     "validated": 1,
+    "latitude": "40.7128",
+    "longitude": "-74.0060",
+    "userId": 4
+}
+
+
+### Crear Conocimiento Teacher
+POST {{host}}/api/knowledges
+Content-Type: application/json
+
+{
+    "teacherId": 4,
+    "knowledgeId":2
+}
+
+
 ### Filtrar teachers
 POST {{host}}/api/teachers/filter
 Content-Type: application/json

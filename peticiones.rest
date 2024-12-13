@@ -54,6 +54,10 @@ Content-Type: application/json
     "rol": "student"
 }
 
+### Get all students
+GET {{host}}/api/users/students
+
+
 ### Post a comment
 POST {{host}}/api/messages
 Content-Type: application/json

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 router.use('/auth', require('./api/auth.routes'));
+router.use('/users', require('./api/users.routes'))
 router.use('/teachers', require('./api/teachers.routes'));
 router.use('/knowledges', require('./api/knowledge.routes'));
 router.use('/students', require('./api/students.routes'));

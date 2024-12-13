@@ -23,6 +23,10 @@ const User = sequelize.define('User', {
       isEmail: true
     }
   },
+  validated: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false
+  },
   password: {
     type: DataTypes.STRING,
     allowNull: false

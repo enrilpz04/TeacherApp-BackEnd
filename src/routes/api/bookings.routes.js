@@ -2,38 +2,30 @@ const router = require('express').Router();
 const {
   getAllBookingsFromStudent,
   getAllBookingsFromTeacher,
-  getAllBookingsFromTeacherAndDate,
+  getAllBookingsFromTeacherByDate,
+  getAllBookingsFromUserByDateAndStatus,
   getAllBookingsBetweenStudentAndTeacher,
-  getAllBokingsByTeacherIdDateAndStatus,
+  getBookingById,
   createBooking,
   updateBooking,
   deleteBooking,
-  getBookingById
 } = require('../../controllers/bookings.controller');
 
-// Obtener todos los bookings de un estudiante
+// Peticiones GET
 router.get('/student/:studentId', getAllBookingsFromStudent);
-
-// Obtener todos los bookings de un profesor
 router.get('/teacher/:teacherId', getAllBookingsFromTeacher);
-
-router.get('/date/', getAllBookingsFromTeacherAndDate);
-
-// Obtener todos los bookings entre un estudiante y un profesor
-router.get('/between/', getAllBookingsBetweenStudentAndTeacher);
-
-// Obtener un booking por su ID
+router.get('/teacher/date', getAllBookingsFromTeacherByDate);
+router.get('/date-status', getAllBookingsFromUserByDateAndStatus);
+router.get('/between', getAllBookingsBetweenStudentAndTeacher);
 router.get('/:id', getBookingById);
 
-// Crear un nuevo booking
+// Peticiones POST
 router.post('/', createBooking);
-router.get('/teacher/status/date/', getAllBokingsByTeacherIdDateAndStatus);
 
-
-// Actualizar un booking existente
+// Peticiones PUT
 router.put('/:id', updateBooking);
 
-// Eliminar un booking
+// Peticiones DELETE
 router.delete('/:id', deleteBooking);
 
 

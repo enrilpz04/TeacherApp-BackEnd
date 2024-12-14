@@ -16,8 +16,8 @@ const Review = require("./reviews.model");
 // Conexiones de la tabla User
 User.hasMany(Booking, { foreignKey: 'studentId', as: 'studentBookings' });
 User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
-User.hasMany(Review, { 
-  foreignKey: 'userId', 
+User.hasMany(Review, {
+  foreignKey: 'userId',
   as: 'reviews',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE'
@@ -32,8 +32,8 @@ Teacher.belongsToMany(Knowledge, {
   foreignKey: 'teacherId',
   otherKey: 'knowledgeId'
 });
-Teacher.hasMany(Review, { 
-  foreignKey: 'teacherId', 
+Teacher.hasMany(Review, {
+  foreignKey: 'teacherId',
   as: 'reviews',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE'
@@ -44,12 +44,12 @@ Booking.belongsTo(User, { foreignKey: 'studentId', as: 'student' });
 Booking.belongsTo(Teacher, { foreignKey: 'teacherId', as: 'teacher' });
 
 // Conexiones de la tabla Review
-Review.belongsTo(User, { 
-  foreignKey: "userId", 
+Review.belongsTo(User, {
+  foreignKey: "userId",
   as: "user"
 });
-Review.belongsTo(Teacher, { 
-  foreignKey: "teacherId", 
+Review.belongsTo(Teacher, {
+  foreignKey: "teacherId",
   as: "teacher"
 });
 
@@ -62,14 +62,14 @@ Knowledge.belongsToMany(Teacher, {
 });
 
 // Conexiones de la tabla Messages
-Message.belongsTo(User, { 
-  foreignKey: "senderId", 
+Message.belongsTo(User, {
+  foreignKey: "senderId",
   as: "sender",
   onDelete: 'CASCADE', // Cambiado de SET NULL a CASCADE
   onUpdate: 'CASCADE'
 });
-Message.belongsTo(User, { 
-  foreignKey: "recipientId", 
+Message.belongsTo(User, {
+  foreignKey: "recipientId",
   as: "recipient",
   onDelete: 'CASCADE', // Cambiado de SET NULL a CASCADE
   onUpdate: 'CASCADE'

@@ -41,7 +41,4 @@ const Notification = sequelize.define('Notification', {
   timestamps: false
 });
 
-// Definir la relación
-Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
 module.exports = Notification;

@@ -9,7 +9,7 @@ const getAllTeachers = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         },
         {
           model: Knowledge,
@@ -61,7 +61,7 @@ const getTeacherById = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         },
         {
           model: Knowledge,
@@ -85,7 +85,7 @@ const getTeacherByUserId = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         },
         {
           model: Knowledge,
@@ -208,7 +208,7 @@ const getFilteredTeachers = async (req, res) => {
     {
       model: User,
       as: 'user',
-      attributes: ['id', 'name', 'surname', 'email', 'rol'],
+      attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol'],
       where: {}
     },
     {

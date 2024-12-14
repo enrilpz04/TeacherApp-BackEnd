@@ -12,7 +12,7 @@ const getReviewsByTeacher = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email']
+          attributes: ['id', 'name', 'surname', 'avatar', 'email']
         },
         {
           model: Teacher,

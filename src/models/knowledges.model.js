@@ -13,7 +13,7 @@ const Knowledge = sequelize.define('Knowledge', {
   }
 }, {
   tableName: 'knowledges',
-  timestamps: false // Deshabilita las marcas de tiempo
+  timestamps: false
 });
 
 module.exports = Knowledge;

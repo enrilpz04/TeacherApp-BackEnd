@@ -9,7 +9,7 @@ const getAllTeachers = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         },
         {
           model: Knowledge,
@@ -61,7 +61,7 @@ const getTeacherById = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         },
         {
           model: Knowledge,
@@ -85,7 +85,7 @@ const getTeacherByUserId = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email', 'rol']
+          attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         },
         {
           model: Knowledge,
@@ -101,7 +101,7 @@ const getTeacherByUserId = async (req, res) => {
 }
 
 const createTeacher = async (req, res) => {
-  const {  description, schedule, price_p_hour, experience, rating, validated, latitude, longitude, userId  } = req.body;
+  const {  description, schedule, price_p_hour, experience, rating, validated, latitude, longitude, user  } = req.body;
   try {
     const teacher = await Teacher.create({
       description,
@@ -112,10 +112,11 @@ const createTeacher = async (req, res) => {
       validated,
       latitude,
       longitude,
-      userId,
+      userId: user.id,
     });
     res.status(201).json(teacher);
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ error: error.message });
   }
 }
@@ -208,7 +209,7 @@ const getFilteredTeachers = async (req, res) => {
     {
       model: User,
       as: 'user',
-      attributes: ['id', 'name', 'surname', 'email', 'rol'],
+      attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol'],
       where: {}
     },
     {

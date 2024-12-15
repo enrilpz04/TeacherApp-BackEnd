@@ -8,7 +8,7 @@ const Booking = sequelize.define('Booking', {
       primaryKey: true
     },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     startTime: {

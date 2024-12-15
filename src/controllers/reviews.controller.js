@@ -12,7 +12,7 @@ const getReviewsByTeacher = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'surname', 'email']
+          attributes: ['id', 'name', 'surname', 'avatar', 'email']
         },
         {
           model: Teacher,
@@ -105,13 +105,14 @@ const getReviewById = async (req, res) => {
 
 // Método para crear una nueva review
 const createReview = async (req, res) => {
-  const { rating, comment, studentId, teacherId } = req.body;
+  const { rating, comment, date, user, teacher } = req.body;
   try {
     const newReview = await Review.create({
       rating,
       comment,
-      studentId,
-      teacherId
+      date,
+      userId: user.id,
+      teacherId: teacher.id
     });
     res.status(201).json(newReview);
   } catch (error) {

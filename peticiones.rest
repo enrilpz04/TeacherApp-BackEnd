@@ -1,0 +1,325 @@
+@host = http://localhost:3000
+
+### Registro de Usuario
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+    "name": "Enrique",
+    "surname": "Garcia",
+    "email": "enriquelopezgordillo@gmail.com",
+    "password": "password123",
+    "rol": "teacher"
+}
+
+### Login de Usuario
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "enriquelopezgordillo@gmail.com",
+    "password": "123456"
+}
+
+### Obtener Todos los Profesores
+GET {{host}}/api/teachers
+
+### Crear un Profesor
+POST {{host}}/api/teachers
+Content-Type: application/json
+
+{
+    "description": "I am a passionate Python developer with a love for teaching. I have worked on various projects ranging from web development to data science.",
+    "schedule": "Morning",
+    "price_p_hour": 30.0,
+    "experience": "5 years in Python",
+    "rating": 4.5,
+    "validated": true,
+    "latitude": "40.7128",
+    "longitude": "-74.0060",
+    "userId": 1
+}
+
+### Obtener un Profesor por ID
+GET {{host}}/api/teachers/1
+
+### Actualizar un Profesor
+PUT {{host}}/api/teachers/1
+Content-Type: application/json
+
+{
+    "description": "Nueva descripción",
+    "price_p_hour": 35.0
+}
+
+### Eliminar un Profesor
+DELETE {{host}}/api/teachers/1
+
+### Filtrar Profesores
+POST {{host}}/api/teachers/filter
+Content-Type: application/json
+
+{
+    "schedule": "Morning",
+    "ratingMin": 4
+}
+
+### Obtener Profesores por Ubicación
+POST {{host}}/api/teachers/location
+Content-Type: application/json
+
+{
+    "latitude": "40.7128",
+    "longitude": "-74.0060",
+    "radius": 10
+}
+
+### Agregar un Conocimiento a un Profesor
+POST {{host}}/api/teachers/1/knowledges/2
+
+### Eliminar un Conocimiento de un Profesor
+DELETE {{host}}/api/teachers/1/knowledges/2
+
+### Obtener Todos los Conocimientos
+GET {{host}}/api/knowledges
+
+### Crear un Conocimiento
+POST {{host}}/api/knowledges
+Content-Type: application/json
+
+{
+    "name": "Matemáticas"
+}
+
+### Obtener un Conocimiento por ID
+GET {{host}}/api/knowledges/1
+
+### Actualizar un Conocimiento
+PUT {{host}}/api/knowledges/1
+Content-Type: application/json
+
+{
+    "name": "Física"
+}
+
+### Eliminar un Conocimiento
+DELETE {{host}}/api/knowledges/1
+
+### Obtener los Últimos Mensajes de un Usuario
+GET {{host}}/api/messages/latests?userId=4
+
+### Obtener los Mensajes Entre Dos Usuarios
+GET {{host}}/api/messages/between?user1Id=3&user2Id=4
+
+### Crear un Mensaje
+POST {{host}}/api/messages/
+Content-Type: application/json
+
+{
+    "text": "Test message",
+    "date": "2024-11-25 10:10:10",
+    "senderId": 1,
+    "recipientId": 2
+}
+
+### Eliminar un Mensaje
+DELETE {{host}}/api/messages/7
+
+### Obtener Reservas de un Estudiante
+GET {{host}}/api/bookings/student/4
+
+### Obtener Reservas de un Profesor
+GET {{host}}/api/bookings/teacher/1
+
+### Obtener Reservas Entre un Estudiante y un Profesor
+GET {{host}}/api/bookings/between?studentId=2&teacherId=1
+
+### Crear una Reserva
+POST {{host}}/api/bookings/
+Content-Type: application/json
+
+{
+    "date": "2024-11-28 09:00:00",
+    "startTime": "10:00:00",
+    "status": "confirmed",
+    "studentId": 2,
+    "teacherId": 1
+}
+
+### Eliminar una Reserva
+DELETE {{host}}/api/bookings/5
+
+### Obtener una Reserva por ID
+GET {{host}}/api/bookings/6
+
+### Actualizar una Reserva
+PUT {{host}}/api/bookings/7
+Content-Type: application/json
+
+{
+    "status": "cancelled",
+}
+
+### Obtener Reseñas de un Profesor
+GET {{host}}/api/reviews/teacher/1
+
+### Crear una Reseña
+POST {{host}}/api/reviews/
+Content-Type: application/json
+
+{
+    "rating": 5,
+    "comment": "Excelente profesor",
+    "date": "2024-11-26",
+    "userId": 2,
+    "teacherId": 1
+}
+
+### Obtener una Reseña por ID
+GET {{host}}/api/reviews/1
+
+### Actualizar una Reseña
+PUT {{host}}/api/reviews/1
+Content-Type: application/json
+
+{
+    "comment": "Actualización del comentario",
+    "rating": 4.5
+}
+
+### Eliminar una Reseña
+DELETE {{host}}/api/reviews/1
+
+### Agregar una Reseña desde un Estudiante
+POST /api/students/1/reviews
+Content-Type: application/json
+
+{
+    "rating": 4,
+    "comment": "Buen profesor",
+    "date": "2024-11-27",
+    "teacherId": 1
+}
+
+### Obtener Reseñas de un Estudiante
+GET /api/students/1/reviews
+
+### Eliminar una Reseña de un Estudiante
+DELETE /api/students/1/reviews/3
+
+### Obtener un Estudiante por ID
+GET {{host}}/api/students/1
+
+### Actualizar un Estudiante
+PUT {{host}}/api/students/1
+Content-Type: application/json
+
+{
+    "name": "Nuevo Nombre",
+    "email": "nuevoemail@ejemplo.com"
+}
+
+### Eliminar un Estudiante
+DELETE {{host}}/api/students/1
+
+### Agregar un Estudiante a un Curso
+POST /api/courses/2/students
+Content-Type: application/json
+
+{
+    "studentId": 3
+}
+
+### Obtener los Estudiantes de un Curso
+GET /api/courses/2/students
+
+### Eliminar un Estudiante de un Curso
+DELETE /api/courses/2/students/3
+
+### Crear Notificación: Registro de Profesor Pendiente de Validación
+POST {{host}}/api/notifications
+Content-Type: application/json
+
+{
+    "type": "new_teacher_registration",
+    "message": "Un nuevo profesor se ha registrado y está pendiente de validación.",
+    "date": "2024-11-30T15:00:00Z",
+    "watched": false,
+    "userId": 1
+}
+
+### Crear Notificación: Profesor Validado
+POST {{host}}/api/notifications
+Content-Type: application/json
+
+{
+    "type": "teacher_validation",
+    "message": "Tu registro como profesor ha sido aprobado y ahora apareces en el directorio.",
+    "date": "2024-11-30T16:00:00Z",
+    "watched": false,
+    "userId": 2
+}
+
+### Obtener Todas las Notificaciones
+GET {{host}}/api/notifications
+
+### Obtener Notificaciones de un Usuario Específico
+GET {{host}}/api/notifications/user/1
+
+### Crear una Notificación
+POST {{host}}/api/notifications/
+Content-Type: application/json
+
+{
+    "type": "new_booking",
+    "message": "Tienes una nueva reserva",
+    "date": "2024-11-28",
+    "userId": 1
+}
+
+### Crear una Nueva Notificación
+POST {{host}}/api/notifications
+Content-Type: application/json
+
+{
+    "type": "new_review",
+    "message": "Has recibido una nueva reseña de uno de tus alumnos.",
+    "date": "2024-11-30T17:00:00Z",
+    "watched": false,
+    "userId": 3
+}
+
+### Actualizar una Notificación
+PUT {{host}}/api/notifications/1
+Content-Type: application/json
+
+{
+    "watched": true
+}
+
+### Eliminar notificaciones leídas
+PUT {{host}}/api/notifications/user/clear/1
+Content-Type: application/json
+
+{
+    "watched": true
+}
+
+### Eliminar una Notificación
+DELETE {{host}}/api/notifications/1
+
+
+
+
+### Crear una Nueva Notificación (de prueba)
+POST {{host}}/api/notifications
+Content-Type: application/json
+
+{
+    "type": "new_review",
+    "message": "Has recibido una nueva reseña de uno de tus alumnos.",
+    "date": "2024-11-30T17:00:00Z",
+    "watched": false,
+    "userId": 3
+}
+

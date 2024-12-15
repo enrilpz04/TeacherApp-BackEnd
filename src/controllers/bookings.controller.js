@@ -213,14 +213,12 @@ const getBookingById = async (req, res) => {
 
 // Método para crear un nuevo booking
 const createBooking = async (req, res) => {
-  const { date, startTime, duration, status, totalPrice, student, teacher } = req.body;
+  const { date, startTime, status, student, teacher } = req.body;
   try {
     const booking = await Booking.create({
       date,
       startTime,
-      duration,
       status,
-      totalPrice,
       studentId: student.id,
       teacherId: teacher.id
     });
@@ -233,7 +231,7 @@ const createBooking = async (req, res) => {
 // Método para actualizar un booking existente
 const updateBooking = async (req, res) => {  
   const { id } = req.params;
-  const { date, startTime, duration, status, totalPrice, studentId, teacherId } = req.body;
+  const { date, startTime, status, studentId, teacherId } = req.body;
   
   console.log(`Intentando actualizar Booking con id: ${id}`);
   
@@ -250,9 +248,7 @@ const updateBooking = async (req, res) => {
     await booking.update({
       date,
       startTime,
-      duration,
       status,
-      totalPrice,
       studentId,
       teacherId
     });

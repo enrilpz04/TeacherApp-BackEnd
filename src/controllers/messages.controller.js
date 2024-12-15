@@ -2,18 +2,17 @@ const { Message, User } = require('../models');
 const sequelize = require('../config/db.js');
 const { Op, Sequelize } = require('sequelize');
 
-// Método para obtener todos los mensajes entre dos usuarios
+// Método para obtener todos los mensajes entre emisor y receptor (conversación de dos usuarios)
 const getAllMessagesBetweenUsers = async (req, res) => {
-  const { userId1, userId2 } = req.query;
-
+  const user1Id = req.query.user1Id;
+  const user2Id = req.query.user2Id;
   try {
     const messages = await Message.findAll({
       where: {
         [Op.or]: [
-          { senderId: userId1, recipientId: userId2 },
-          { senderId: userId2, recipientId: userId1 }
-        ]
-      },
+          { recipientId: user1Id, senderId: user2Id },
+          { recipientId: user2Id, senderId: user1Id }
+        ]},
       include: [
         {
           model: User,
@@ -26,32 +25,31 @@ const getAllMessagesBetweenUsers = async (req, res) => {
           attributes: ['id', 'name', 'surname', 'email', 'avatar', 'rol']
         }
       ],
-      order: [['date', 'ASC']]
+      order: [['date', 'DESC']]
     });
-
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Método para obtener los últimos mensajes de un usuario
+// Método para obtener el último mensaje de cada conversación de un usuario
 const getLastMessagesByUser = async (req, res) => {
-  const { userId } = req.params;
-
+  const userId = req.query.userId;
   try {
-    const messages = await Message.findAll({
-      where: {
-        [Op.or]: [
-          { senderId: userId },
-          { recipientId: userId }
-        ]
-      },
-      order: [['date', 'DESC']],
-      limit: 1
-    });
-
-    res.status(200).json(messages);
+    const latestMessages = await sequelize.query(
+      `SELECT * FROM messages
+      WHERE messages.id IN (
+        SELECT MAX(id) FROM messages
+        WHERE recipientId = ${userId}
+          OR senderId = ${userId}
+        GROUP BY (senderId + recipientId))
+        ORDER BY DATE DESC`,
+      {
+        model: Message,
+        mapToModel: true
+      });
+    res.status(200).json(latestMessages);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -95,7 +93,6 @@ const createMessage = async (req, res) => {
 // Método para eliminar un mensaje
 const deleteMessage = async (req, res) => {
   const { id } = req.params;
-
   try {
     const message = await Message.findByPk(id);
     if (!message) {

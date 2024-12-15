@@ -1,868 +1,325 @@
 @host = http://localhost:3000
 
-
-### Obtener todos los teachers
-GET {{host}}/api/teachers
-
-### Obtener teacher por user ID
-GET {{host}}/api/teachers/user/1
-
-### Crear teacher
-POST {{host}}/api/teachers
-Content-Type: application/json
-
-{
-  "description": "I am a passionate Python developer with a love for teaching. I have worked on various projects ranging from web development to data science.",
-  "schedule": "Morning",
-  "price_p_hour": 30.0,
-  "experience": "5 years in Python",
-  "rating": 4.5,
-  "validated": true,
-  "latitude": "40.7128",
-  "longitude": "-74.0060",
-  "userId": 1
-}
-
-
-### Filtrar teachers
-POST {{host}}/api/teachers/filter
-Content-Type: application/json
-
-
-{
-    "knowledge": "",
-    "schedule": "Mañana",
-    "minPrice": 20,
-
-
-    "maxPrice": 100,
-    "orderOption": "Mejor Valoracion",
-    "name": "Al"
-}
-
-
-### Register
+### Registro de Usuario
 POST {{host}}/api/auth/register
 Content-Type: application/json
-
 
 {
     "name": "Enrique",
     "surname": "Garcia",
-    "email": "enriquelopezgordil@gmail.com",
-    "password": "12345678",
-    "rol": "student"
+    "email": "enriquelopezgordillo@gmail.com",
+    "password": "password123",
+    "rol": "teacher"
 }
 
-### Post a comment
-POST {{host}}/api/messages
-Content-Type: application/json
-
-{
-    "text" : "holaa",
-    "watched" : false,
-    "recipientId" : 1,
-    "senderId" : 11
-}
-
-
-### Login
+### Login de Usuario
 POST {{host}}/api/auth/login
 Content-Type: application/json
-
 
 {
     "email": "enriquelopezgordillo@gmail.com",
     "password": "123456"
 }
 
+### Obtener Todos los Profesores
+GET {{host}}/api/teachers
 
-### Get last messages for user1
-GET {{host}}/api/messages/latests?userId=4
-
-
-### Get messages between user1 and user2
-GET {{host}}/api/messages/between?user1Id=3&user2Id=4
-
-
-### Creation of messages
-POST {{host}}/api/messages/
+### Crear un Profesor
+POST {{host}}/api/teachers
 Content-Type: application/json
 
+{
+    "description": "I am a passionate Python developer with a love for teaching. I have worked on various projects ranging from web development to data science.",
+    "schedule": "Morning",
+    "price_p_hour": 30.0,
+    "experience": "5 years in Python",
+    "rating": 4.5,
+    "validated": true,
+    "latitude": "40.7128",
+    "longitude": "-74.0060",
+    "userId": 1
+}
+
+### Obtener un Profesor por ID
+GET {{host}}/api/teachers/1
+
+### Actualizar un Profesor
+PUT {{host}}/api/teachers/1
+Content-Type: application/json
+
+{
+    "description": "Nueva descripción",
+    "price_p_hour": 35.0
+}
+
+### Eliminar un Profesor
+DELETE {{host}}/api/teachers/1
+
+### Filtrar Profesores
+POST {{host}}/api/teachers/filter
+Content-Type: application/json
+
+{
+    "schedule": "Morning",
+    "ratingMin": 4
+}
+
+### Obtener Profesores por Ubicación
+POST {{host}}/api/teachers/location
+Content-Type: application/json
+
+{
+    "latitude": "40.7128",
+    "longitude": "-74.0060",
+    "radius": 10
+}
+
+### Agregar un Conocimiento a un Profesor
+POST {{host}}/api/teachers/1/knowledges/2
+
+### Eliminar un Conocimiento de un Profesor
+DELETE {{host}}/api/teachers/1/knowledges/2
+
+### Obtener Todos los Conocimientos
+GET {{host}}/api/knowledges
+
+### Crear un Conocimiento
+POST {{host}}/api/knowledges
+Content-Type: application/json
+
+{
+    "name": "Matemáticas"
+}
+
+### Obtener un Conocimiento por ID
+GET {{host}}/api/knowledges/1
+
+### Actualizar un Conocimiento
+PUT {{host}}/api/knowledges/1
+Content-Type: application/json
+
+{
+    "name": "Física"
+}
+
+### Eliminar un Conocimiento
+DELETE {{host}}/api/knowledges/1
+
+### Obtener los Últimos Mensajes de un Usuario
+GET {{host}}/api/messages/latests?userId=4
+
+### Obtener los Mensajes Entre Dos Usuarios
+GET {{host}}/api/messages/between?user1Id=3&user2Id=4
+
+### Crear un Mensaje
+POST {{host}}/api/messages/
+Content-Type: application/json
 
 {
     "text": "Test message",
     "date": "2024-11-25 10:10:10",
-    "senderId": 7,
-    "recipientId": 7
-}
-
-
-### Delete message
-DELETE {{host}}/api/messages/7
-
-
-### Get bookings from teacher
-GET {{host}}/api/bookings/teacher/4
-
-
-### Get bookings from student
-GET {{host}}/api/bookings/student/13
-
-
-### Get bookings between student and teacher
-GET {{host}}/api/bookings/between?studentId=11&teacherId=1
-
-### Get chats from user
-GET {{host}}/api/messages/chats/6
-
-
-### Create booking
-POST {{host}}/api/bookings/
-Content-Type: application/json
-
-
-{
-    "date": "2024-11-28 09:00:00",
-    "startTime": "10:00:00",
-    "duration": 60,
-    "status": "confirmed",
-    "totalPrice": 30,
-    "studentId": 13,
-    "teacherId": 4
-}
-
-
-### Delete booking
-DELETE {{host}}/api/bookings/5
-
-
-### Get booking by id
-GET {{host}}/api/bookings/1
-
-
-### Update booking
-PUT {{host}}/api/bookings/7
-
-
-Content-Type: application/json
-
-
-{
-    "date": "2024-11-28T10:10:10.000Z",
-    "startTime": "10:00:00",
-    "duration": 40,
-    "status": "confirmed",
-    "totalPrice": 30,
-    "studentId": 2,
-    "teacherId": 1    
-}
-
-
-
-
-
-### GET messages between two users
-GET {{host}}/api/messages/between?userId1=11&userId2=20
-
-
-
-
-
-
-
-
-
-
-
-### Get reviews from teacher
-GET {{host}}/api/reviews/teacher/1
-
-
-### Create review
-POST {{host}}/api/reviews/
-Content-Type: application/json
-
-
-{
-    "rating": 5,
-    "comment": "Great teacher",
-    "teacherId": 1,
-    "studentId": 2
-}
-
-
-### Get review by id
-GET {{host}}/api/reviews/teacher/1
-
-
-### Update review
-PUT {{host}}/api/reviews/1
-
-
-Content-Type: application/json
-
-
-{
-    "rating": 5,
-    "comment": "Good teacher",
-    "teacherId": 1,
-    "studentId": 2
-}
-
-
-### Delete review
-DELETE {{host}}/api/reviews/1
-
-
-### Get student by id
-GET {{host}}/api/students/1
-
-
-### Update student
-PUT {{host}}/api/students/1
-
-
-Content-Type: application/json
-
-
-{
-    "name": "Enrique",
-    "surname": "Garcia",
-    "email": "
-}
-
-
-### Delete student
-DELETE {{host}}/api/students/1
-
-
-### Get teacher by id
-
-
-GET {{host}}/api/teachers/1
-
-
-### Update teacher
-PUT {{host}}/api/teachers/1
-
-
-Content-Type: application/json
-
-
-{
-    "name": "Enrique",
-    "surname": "Garcia",
-    "email": "enriquelopezgordillo@gmail.com",
-    "knowledge": "English",
-    "schedule": "Mañana",
-    "minPrice": 20,
-    "maxPrice": 100
-}
-
-
-### Delete teacher
-DELETE {{host}}/api/teachers/1
-
-
-
-
-{
-    "date": "2024-11-28 10:10:10",
-    "startTime": "10:00:00",
-    "duration": 40,
-    "status": "confirmed",
-    "totalPrice": 30,
-    "studentId": 2,
-    "teacherId": 1    
-}
-
-
-
-
-
-
-{
- "id": 6,
-  "date": "2024-11-28",
-  "startTime": "10:00:00",
-  "duration": 40,
-  "status": "confirmed",
-  "totalPrice": 30,
-  "studentId": 2,
-  "teacherId": 1,
-  "student": {
-    "id": 2,
-    "name": "Jane",
-    "surname": "Smith",
-    "email": "jane.smith@example.com",
-    "rol": "student"
-  },
-  "teacher": {
-    "userId": 1,
-    "price_p_hour": 30,
-    "schedule": "Morning",
-    "knowledges": [
-      {
-        "name": "Python"
-      }
-    ]
-  }
-}
-
-
-
-
-### Agregar un Conocimiento a un Profesor:
-POST /api/teachers/:teacherId/knowledges
-
-
-Content-Type: application/json
-
-
-{
-  "name": "JavaScript"
-}
-
-
-### Obtener los Conocimientos de un Profesor:
-### Eliminar un Conocimiento de un Profesor:
-DELETE /api/teachers/:teacherId/knowledges/:knowledgeId
-
-
-### Agregar un Horario a un Profesor:
-POST /api/teachers/:teacherId/schedule
-
-
-Content-Type: application/json
-
-
-{
-  "day": "Monday",
-  "start": "09:00",
-  "end": "13:00"
-}  
-
-
-### Obtener los Horarios de un Profesor:
-GET /api/teachers/:teacherId/schedule
-
-
-### Eliminar un Horario de un Profesor:
-DELETE /api/teachers/:teacherId/schedule/:scheduleId
-
-
-### Agregar un Review a un Estudiante:
-POST /api/students/:studentId/reviews
-
-
-Content-Type: application/json
-
-
-{
-  "rating": 5,
-  "comment": "Great teacher!"
-}
-
-
-### Obtener los Reviews de un Estudiante:
-
-
-GET /api/students/:studentId/reviews
-
-
-### Eliminar un Review de un Estudiante:
-DELETE /api/students/:studentId/reviews/:reviewId
-
-
-### Agregar un Mensaje a un Usuario:
-
-
-POST /api/messages
-
-
-Content-Type: application/json
-
-
-{
-  "text": "Hola, estoy interesado en la materia de Python!",
     "senderId": 1,
     "recipientId": 2
 }
 
+### Eliminar un Mensaje
+DELETE {{host}}/api/messages/7
 
-### Obtener los Mensajes Recientes de un Usuario:
+### Obtener Reservas de un Estudiante
+GET {{host}}/api/bookings/student/4
 
+### Obtener Reservas de un Profesor
+GET {{host}}/api/bookings/teacher/1
 
-GET /api/messages/latests?userId=:userId
+### Obtener Reservas Entre un Estudiante y un Profesor
+GET {{host}}/api/bookings/between?studentId=2&teacherId=1
 
-
-### Obtener los Mensajes Entre dos Usuarios:
-
-
-GET /api/messages/between?user1Id=:user1Id&user2Id=:user2Id
-
-
-### Eliminar un Mensaje:
-
-
-DELETE /api/messages/:messageId
-
-
-### Agregar una Reserva:
-
-
-POST /api/bookings
-
-
+### Crear una Reserva
+POST {{host}}/api/bookings/
 Content-Type: application/json
 
-
 {
-  "date": "2024-11-28",
-  "startTime": "10:00:00",
-  "duration": 40,
-    "status": "confirmed",
-    "totalPrice": 30,
-    "studentId": 2,
-    "teacherId": 1
-}
-
-
-### Obtener las Reservas de un Estudiante:
-
-
-GET /api/bookings/student/:studentId
-
-
-### Obtener las Reservas de un Profesor:
-
-
-GET /api/bookings/teacher/:teacherId
-
-
-### Obtener las Reservas Entre un Estudiante y un Profesor:
-
-
-GET /api/bookings/between?studentId=:studentId&teacherId=:teacherId
-
-
-### Eliminar una Reserva:
-
-
-DELETE /api/bookings/:bookingId
-
-
-### Obtener una Reserva por ID:
-
-
-GET /api/bookings/:bookingId
-
-
-### Actualizar una Reserva:
-
-
-PUT /api/bookings/:bookingId
-
-
-Content-Type: application/json
-
-
-{
-  "date": "2024-11-28",
+    "date": "2024-11-28 09:00:00",
     "startTime": "10:00:00",
-    "duration": 40,
     "status": "confirmed",
-    "totalPrice": 30,
     "studentId": 2,
     "teacherId": 1
 }
 
+### Eliminar una Reserva
+DELETE {{host}}/api/bookings/5
 
-### Agregar un Comentario a un Review:
+### Obtener una Reserva por ID
+GET {{host}}/api/bookings/6
 
-
-POST /api/reviews/:reviewId/comments
-
-
+### Actualizar una Reserva
+PUT {{host}}/api/bookings/7
 Content-Type: application/json
 
-
 {
-    "text": "Great teacher!"  
+    "status": "cancelled",
 }
 
+### Obtener Reseñas de un Profesor
+GET {{host}}/api/reviews/teacher/1
 
-### Obtener los Comentarios de un Review:
-
-
-GET /api/reviews/:reviewId/comments
-
-
-### Eliminar un Comentario de un Review:
-
-
-DELETE /api/reviews/:reviewId/comments/:commentId
-
-
-### Obtener un Comentario por ID:
-
-
-GET /api/reviews/:reviewId/comments/:commentId
-
-
-### Actualizar un Comentario:
-
-
-PUT /api/reviews/:reviewId/comments/:commentId
-
-
+### Crear una Reseña
+POST {{host}}/api/reviews/
 Content-Type: application/json
 
-
 {
-    "text": "Great teacher!"  
+    "rating": 5,
+    "comment": "Excelente profesor",
+    "date": "2024-11-26",
+    "userId": 2,
+    "teacherId": 1
 }
 
+### Obtener una Reseña por ID
+GET {{host}}/api/reviews/1
 
-### Agregar un Estudiante a un Curso:
-
-
-POST /api/courses/:courseId/students
-
-
+### Actualizar una Reseña
+PUT {{host}}/api/reviews/1
 Content-Type: application/json
 
-
 {
-    "studentId": 2  
+    "comment": "Actualización del comentario",
+    "rating": 4.5
 }
 
+### Eliminar una Reseña
+DELETE {{host}}/api/reviews/1
 
-### Obtener los Estudiantes de un Curso:
-
-
-GET /api/courses/:courseId/students
-
-
-### Eliminar un Estudiante de un Curso:
-
-
-DELETE /api/courses/:courseId/students/:studentId
-
-
-### Obtener un Estudiante por ID:
-
-
-GET /api/students/:studentId
-
-
-### Actualizar un Estudiante:
-
-
-PUT /api/students/:studentId
-
-
+### Agregar una Reseña desde un Estudiante
+POST /api/students/1/reviews
 Content-Type: application/json
 
-
 {
-    "name": "Jane",
-    "surname": "Smith",
-    "email": "jane.smith@example.com",
-    "rol": "student"
+    "rating": 4,
+    "comment": "Buen profesor",
+    "date": "2024-11-27",
+    "teacherId": 1
 }
 
+### Obtener Reseñas de un Estudiante
+GET /api/students/1/reviews
 
-### Eliminar un Estudiante:
+### Eliminar una Reseña de un Estudiante
+DELETE /api/students/1/reviews/3
 
+### Obtener un Estudiante por ID
+GET {{host}}/api/students/1
 
-DELETE /api/students/:studentId
-
-
-### Obtener un Profesor por ID:
-
-
-GET /api/teachers/:teacherId
-
-
-### Actualizar un Profesor:
-
-
-PUT /api/teachers/:teacherId
-
-
+### Actualizar un Estudiante
+PUT {{host}}/api/students/1
 Content-Type: application/json
 
-
 {
-    "name": "Enrique",
-    "surname": "Garcia",
-    "email": "enriquelopezgordillo@gmail.com",
-    "knowledge": "English",
-    "schedule": "Morning",
-    "minPrice": 20,
-    "maxPrice": 100
+    "name": "Nuevo Nombre",
+    "email": "nuevoemail@ejemplo.com"
 }
 
+### Eliminar un Estudiante
+DELETE {{host}}/api/students/1
 
-### Eliminar un Profesor:
-
-
-DELETE /api/teachers/:teacherId
-
-
-### Agregar un Curso a un Profesor:
-
-
-POST /api/teachers/:teacherId/courses
-
-
+### Agregar un Estudiante a un Curso
+POST /api/courses/2/students
 Content-Type: application/json
 
-
 {
-    "courseId": 1  
+    "studentId": 3
 }
 
+### Obtener los Estudiantes de un Curso
+GET /api/courses/2/students
 
-### Obtener los Cursos de un Profesor:
+### Eliminar un Estudiante de un Curso
+DELETE /api/courses/2/students/3
 
-
-GET /api/teachers/:teacherId/courses
-
-
-### Eliminar un Curso de un Profesor:
-
-
-DELETE /api/teachers/:teacherId/courses/:courseId
-
-
-### Obtener un Curso por ID:
-
-
-GET /api/courses/:courseId
-
-
-### Actualizar un Curso:
-
-
-PUT /api/courses/:courseId
-
-
+### Crear Notificación: Registro de Profesor Pendiente de Validación
+POST {{host}}/api/notifications
 Content-Type: application/json
 
-
 {
-    "name": "Python Programming",
-    "description": "Learn Python programming with us!",
-    "duration": 60,
-    "price": 30  
+    "type": "new_teacher_registration",
+    "message": "Un nuevo profesor se ha registrado y está pendiente de validación.",
+    "date": "2024-11-30T15:00:00Z",
+    "watched": false,
+    "userId": 1
 }
 
-
-### Eliminar un Curso:
-
-
-DELETE /api/courses/:courseId
-
-
-### Agregar un Mensaje a un Curso:
-
-
-POST /api/courses/:courseId/messages
-
-
+### Crear Notificación: Profesor Validado
+POST {{host}}/api/notifications
 Content-Type: application/json
 
-
 {
-    "text": "Hello, I'm interested in this course!"  
+    "type": "teacher_validation",
+    "message": "Tu registro como profesor ha sido aprobado y ahora apareces en el directorio.",
+    "date": "2024-11-30T16:00:00Z",
+    "watched": false,
+    "userId": 2
 }
 
+### Obtener Todas las Notificaciones
+GET {{host}}/api/notifications
 
-### Obtener los Mensajes de un Curso:
+### Obtener Notificaciones de un Usuario Específico
+GET {{host}}/api/notifications/user/1
 
-
-GET /api/courses/:courseId/messages
-
-
-### Eliminar un Mensaje de un Curso:
-
-
-DELETE /api/courses/:courseId/messages/:messageId
-
-
-### Obtener un Mensaje por ID:
-
-
-GET /api/courses/:courseId/messages/:messageId
-
-
-### Actualizar un Mensaje:
-
-
-PUT /api/courses/:courseId/messages/:messageId
-
-
+### Crear una Notificación
+POST {{host}}/api/notifications/
 Content-Type: application/json
 
-
 {
-    "text": "Hello, I'm interested in this course!"  
+    "type": "new_booking",
+    "message": "Tienes una nueva reserva",
+    "date": "2024-11-28",
+    "userId": 1
 }
 
-
-### Agregar un Comentario a un Mensaje:
-
-
-POST /api/courses/:courseId/messages/:messageId/comments
-
-
+### Crear una Nueva Notificación
+POST {{host}}/api/notifications
 Content-Type: application/json
 
-
 {
-    "text": "Great course!"  
+    "type": "new_review",
+    "message": "Has recibido una nueva reseña de uno de tus alumnos.",
+    "date": "2024-11-30T17:00:00Z",
+    "watched": false,
+    "userId": 3
 }
 
-
-### Obtener los Comentarios de un Mensaje:
-
-
-GET /api/courses/:courseId/messages/:messageId/comments
-
-
-### Eliminar un Comentario de un Mensaje:
-
-
-DELETE /api/courses/:courseId/messages/:messageId/comments/:commentId
-
-
-### Obtener un Comentario por ID:
-
-
-GET /api/courses/:courseId/messages/:messageId/comments/:commentId
-
-
-### Actualizar un Comentario:
-
-
-PUT /api/courses/:courseId/messages/:messageId/comments/:commentId
-
-
+### Actualizar una Notificación
+PUT {{host}}/api/notifications/1
 Content-Type: application/json
 
-
 {
-    "text": "Great course!"  
+    "watched": true
 }
 
-
-### Agregar un Estudiante a un Curso:
-
-
-POST /api/courses/:courseId/students
-
-
+### Eliminar notificaciones leídas
+PUT {{host}}/api/notifications/user/clear/1
 Content-Type: application/json
 
-
 {
-    "studentId": 2  
+    "watched": true
 }
 
-
-### Obtener los Estudiantes de un Curso:
-
-
-GET /api/courses/:courseId/students
+### Eliminar una Notificación
+DELETE {{host}}/api/notifications/1
 
 
-### Eliminar un Estudiante de un Curso:
 
 
-DELETE /api/courses/:courseId/students/:studentId
-
-
-### Obtener un Estudiante por ID:
-
-
-GET /api/students/:studentId
-
-
-### Actualizar un Estudiante:
-
-
-PUT /api/students/:studentId
-
-
+### Crear una Nueva Notificación (de prueba)
+POST {{host}}/api/notifications
 Content-Type: application/json
 
-
 {
-    "name": "Jane",
-    "surname": "Smith",
-    "email": "jane.smith@example.com",
-    "rol": "student"
-    "courseId": 1
+    "type": "new_review",
+    "message": "Has recibido una nueva reseña de uno de tus alumnos.",
+    "date": "2024-11-30T17:00:00Z",
+    "watched": false,
+    "userId": 3
 }
 
-
-### Eliminar un Estudiante:
-
-
-DELETE /api/students/:studentId
-
-
-### Agregar un Profesor a un Curso:
-
-
-POST /api/courses/:courseId/teachers
-
-
-Content-Type: application/json
-
-
-{
-    "teacherId": 1  
-}
-
-
-### Obtener los Profesores de un Curso:
-
-
-GET /api/courses/:courseId/teachers
-
-
-### Eliminar un Profesor de un Curso:
-
-
-DELETE /api/courses/:courseId/teachers/:teacherId
-
-
-### Obtener un Profesor por ID:
-
-
-GET /api/teachers/:teacherId
-
-
-### Actualizar un Profesor:
-
-
-PUT /api/teachers/:teacherId
-
-
-Content-Type: application/json
-
-
-{
-    "name": "Enrique",
-    "surname": "Garcia",
-    "email": "enriquelopezgordillo@gmail.com",
-    "knowledge": "English",
-    "schedule": "Morning",
-    "minPrice": 20,
-    "maxPrice": 100
-    "courseId": 1
-}

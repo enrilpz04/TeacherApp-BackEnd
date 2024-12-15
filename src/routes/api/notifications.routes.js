@@ -5,7 +5,8 @@ const {
   getNotificationById,
   createNotification,
   updateNotification,
-  deleteNotification
+  deleteNotification,
+  clearNotifications
 } = require('../../controllers/notifications.controller');
 
 // Obtener todas las notificaciones
@@ -13,6 +14,9 @@ router.get('/', getAllNotifications);
 
 // Obtener todas las notificaciones de un usuario específico
 router.get('/user/:userId', getNotificationsByUser);
+
+// Eliminar notificaciones leídas del popup:
+router.put('/user/clear/:userId', clearNotifications);
 
 // Obtener una notificación por su ID
 router.get('/:id', getNotificationById);

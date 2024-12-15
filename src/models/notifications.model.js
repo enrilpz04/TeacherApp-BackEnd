@@ -10,21 +10,21 @@ const Notification = sequelize.define('Notification', {
   },
   type: {
     type: DataTypes.ENUM(
-      'new_teacher_registration',
-      'teacher_validation',
-      'booking_created',
-      'booking_confirmed',
-      'booking_cancelled',
-      'new_message',
-      'new_review',
-      'profile_updated',
-      'booking_status_change',
+      'new_teacher_registration', 
+      'teacher_validation', 
+      'booking_created', 
+      'booking_confirmed', 
+      'booking_cancelled', 
+      'new_message', 
+      'new_review', 
+      'profile_updated', 
+      'booking_status_change', 
       'upcoming_class'
     ),
     allowNull: false
   },
   message: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false
   },
   date: {
@@ -35,13 +35,20 @@ const Notification = sequelize.define('Notification', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'users',
+      key: 'id'
+    },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE'
   }
 }, {
   tableName: 'notifications',
   timestamps: false
 });
-
-// Definir la relación
-Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 module.exports = Notification;

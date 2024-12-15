@@ -28,6 +28,25 @@ const getNotificationsByUser = async (req, res) => {
   }
 };
 
+// Eliminar notificaciones leídas del popup
+const clearNotifications = async (req, res) => {
+  const { userId } = req.params;
+  try {
+
+    const notifications = await Notification.findAll({
+      where: { userId }
+    });
+
+    for (const notification of notifications) {
+      notification.watched = 1; // Marca como leída
+      await notification.save(); //Guarda los cambios en la base de datos
+    }
+    res.json({ message: 'Notificaciones actualizadas' });  
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Obtener una notificación por su ID
 const getNotificationById = async (req, res) => {
   const { id } = req.params;
@@ -47,13 +66,13 @@ const getNotificationById = async (req, res) => {
 
 // Crear una nueva notificación
 const createNotification = async (req, res) => {
-  const { type, message, date, read, userId } = req.body;
+  const { type, message, date, watched, userId } = req.body;
   try {
     const newNotification = await Notification.create({
       type,
       message,
       date,
-      read,
+      watched,
       userId
     });
     res.status(201).json(newNotification);
@@ -65,14 +84,14 @@ const createNotification = async (req, res) => {
 // Actualizar una notificación existente
 const updateNotification = async (req, res) => {
   const { id } = req.params;
-  const { type, message, date, read, userId } = req.body;
+  const { type, message, date, watched, userId } = req.body;
   try {
     const notification = await Notification.findByPk(id);
     if (notification) {
       notification.type = type !== undefined ? type : notification.type;
       notification.message = message !== undefined ? message : notification.message;
       notification.date = date !== undefined ? date : notification.date;
-      notification.read = read !== undefined ? read : notification.read;
+      notification.watched = watched !== undefined ? watched : notification.watched;
       notification.userId = userId !== undefined ? userId : notification.userId;
       
       await notification.save();
@@ -107,5 +126,6 @@ module.exports = {
   getNotificationById,
   createNotification,
   updateNotification,
-  deleteNotification
+  deleteNotification,
+  clearNotifications
 };

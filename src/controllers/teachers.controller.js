@@ -72,19 +72,20 @@ const getTeacherByUserId = async (req, res) => {
 }
 
 const createTeacher = async (req, res) => {
-  const {  description, schedule, price_p_hour, experience, rating, validated, latitude, longitude, userId  } = req.body;
+  const {  userId, description, price_p_hour, schedule, knowledges, experience, rating, validated, latitude, longitude  } = req.body;
   try {
     const teacher = await Teacher.create({
+      userId
       description,
-      schedule,
       price_p_hour,
+      schedule,
+      knowledges
       experience,
       rating,
       validated,
       latitude,
-      longitude,
-      userId,
-    });
+      longitude
+      });
     res.status(201).json(teacher);
   } catch (error) {
     res.status(500).json({ error: error.message });

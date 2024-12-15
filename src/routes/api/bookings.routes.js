@@ -29,7 +29,6 @@ router.get('/:id', getBookingById);
 router.post('/', createBooking);
 router.get('/teacher/status/date/', getAllBokingsByTeacherIdDateAndStatus);
 
-
 // Actualizar un booking existente
 router.put('/:id', updateBooking);
 

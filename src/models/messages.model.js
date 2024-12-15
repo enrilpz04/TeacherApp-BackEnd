@@ -20,6 +20,26 @@ const Message = sequelize.define('Message', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
+  },
+  senderId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id'
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  },
+  recipientId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id'
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   }
 }, {
   tableName: 'messages',

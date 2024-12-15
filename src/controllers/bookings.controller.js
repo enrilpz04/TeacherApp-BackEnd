@@ -103,13 +103,15 @@ const getAllBookingsFromTeacher = async (req, res) => {
 const getAllBookingsFromTeacherByDate = async (req, res) => {
   const { teacherId, date } = req.query;
   try {
+
+    const whereClause = { teacherId }
+
+    if (date) {
+      whereClause.date = date
+    }
+
     const bookings = await Booking.findAll({
-      where: {
-        teacherId: teacherId,
-        date: {
-          date
-        }
-      },
+      where: whereClause,
       include: [
         {
           model: User,

@@ -40,6 +40,24 @@ Content-Type: application/json
     "name": "Al"
 }
 
+### Crear teacher
+POST {{host}}/api/teachers
+Content-Type: application/json
+
+{
+  "description": "I am a passionate Python developer with a love for teaching. I have worked on various projects ranging from web development to data science.",
+  "schedule": "Morning",
+  "price_p_hour": 30.0,
+  "experience": "5 years in Python",
+  "rating": 4.5,
+  "validated": true,
+  "latitude": "40.7128",
+  "longitude": "-74.0060",
+  "user": {
+    "id": 1
+  }
+}
+
 
 ### Register
 POST {{host}}/api/auth/register

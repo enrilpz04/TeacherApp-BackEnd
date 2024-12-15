@@ -75,11 +75,11 @@ const createTeacher = async (req, res) => {
   const {  userId, description, price_p_hour, schedule, knowledges, experience, rating, validated, latitude, longitude  } = req.body;
   try {
     const teacher = await Teacher.create({
-      userId
+      userId,
       description,
       price_p_hour,
       schedule,
-      knowledges
+      knowledges,
       experience,
       rating,
       validated,

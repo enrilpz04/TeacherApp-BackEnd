@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 
 const app = express();
@@ -6,6 +7,9 @@ const app = express();
 // Middleware configuration
 app.use(express.json());
 app.use(cors());
+
+// Middleware para servir archivos estáticos
+app.use('/uploads/avatars', express.static(path.join(__dirname, './uploads/avatars')));
 
 // Route configuration
 app.use('/api', require('./routes/api.routes'));

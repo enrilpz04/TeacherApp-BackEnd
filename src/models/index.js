@@ -76,7 +76,7 @@ Message.belongsTo(User, {
 });
 
 // Conexiones de la tabla Notifications
-Notification.belongsTo(User, { foreignKey: "userId", as: "userNotification" });
+Notification.belongsTo(User, { foreignKey: "userId", as: "user" });
 
 module.exports = {
   sequelize,

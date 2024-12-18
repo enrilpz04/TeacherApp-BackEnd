@@ -68,7 +68,7 @@ const createMessage = async (req, res) => {
       watched,
       senderId: sender.id,
       recipientId: recipient.id,
-      
+
     });
 
     const fullMessage = await Message.findByPk(message.id, {

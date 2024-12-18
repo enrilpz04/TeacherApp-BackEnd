@@ -1,4 +1,6 @@
-const { Teacher, User, Knowledge } = require('../models');
+const { Teacher, User, Knowledge, TeacherKnowledge, Notification } = require('../models');
+const sequelize = require('../config/db'); // Importa la configuración de sequelize
+const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
 // Método para obtener todos los teachers
@@ -100,26 +102,105 @@ const getTeacherByUserId = async (req, res) => {
   }
 }
 
+/**
+ * Crea un nuevo profesor y sus conocimientos asociados.
+ * 
+ * @param {Object} req - Objeto de solicitud de Express.
+ * @param {string} req.body.name - Nombre del usuario.
+ * @param {string} req.body.surname - Apellido del usuario.
+ * @param {string} req.body.email - Correo electrónico del usuario.
+ * @param {string} req.body.password - Contraseña del usuario.
+ * @param {string} req.body.rol - Rol del usuario.
+ * @param {boolean} req.body.validated - Estado de validación del usuario.
+ * @param {string} req.body.description - Descripción del profesor.
+ * @param {string} req.body.schedule - Horario del profesor.
+ * @param {number} req.body.price_p_hour - Precio por hora del profesor.
+ * @param {number} req.body.experience - Experiencia del profesor.
+ * @param {number} req.body.rating - Calificación del profesor.
+ * @param {number} req.body.latitude - Latitud del profesor.
+ * @param {number} req.body.longitude - Longitud del profesor.
+ * @param {Array} req.body.knowledgeIds - IDs de los conocimientos asociados.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Object} - Respuesta JSON con el profesor creado o un mensaje de error.
+ */
 const createTeacher = async (req, res) => {
-  const {  description, schedule, price_p_hour, experience, rating, validated, latitude, longitude, user  } = req.body;
+  const { name, surname, email, password, rol, validated, description, schedule, price_p_hour, experience, rating, latitude, longitude, knowledgeIds } = req.body;
+  const avatar = req.file ? req.file.filename : null;
+
+  const transaction = await sequelize.transaction();
+
   try {
+    const existingUser = await User.findOne({ where: { email } });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'El correo electrónico ya está registrado' });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    const user = await User.create({
+      name,
+      surname,
+      email,
+      password: hashedPassword,
+      rol,
+      avatar,
+      validated
+    }, { transaction });
+
     const teacher = await Teacher.create({
       description,
       schedule,
       price_p_hour,
       experience,
       rating,
-      validated,
+      validated : false,
       latitude,
       longitude,
-      userId: user.id,
-    });
-    res.status(201).json(teacher);
+      userId: user.id
+    }, { transaction });
+
+    // Supongamos que el array viene como un string JSON
+    const knowledgeIds = JSON.parse(req.body.knowledgeIds); // O req.body.knowledgeIds si es un body JSON
+
+    // Convierte los valores a enteros (si no están ya en ese formato)
+    const knowledgeIdsInt = knowledgeIds.map(id => parseInt(id, 10));
+
+    // Asegúrate de que los valores son enteros antes de procesarlos
+    if (knowledgeIdsInt.every(id => Number.isInteger(id))) {
+      try {
+        for (const knowledgeId of knowledgeIdsInt) {
+          await TeacherKnowledge.create({
+            teacherId: teacher.id,
+            knowledgeId: knowledgeId // Ya es un número entero
+          }, { transaction });
+        }
+      } catch (knowledgeError) {
+        console.error('Error al crear registros en TeacherKnowledge:', knowledgeError);
+        throw knowledgeError;
+      }
+    } else {
+      throw new Error('Algunos IDs no son enteros');
+    }
+
+    console.log("Voy a notificacioneees")
+
+    const notification = await Notification.create({
+      type: 'new_teacher_registration',
+      message: 'Hay un nuevo profesor pendiente de validación: ' + user.name + " " + user.surname + ", con id: " + teacher.id,
+      date: new Date(),
+      watched: false,
+      userId: 1
+    }, { transaction })
+
+    await transaction.commit();
+
+    res.status(201).json({ user, teacher });
   } catch (error) {
-    console.log(error.message)
-    res.status(500).json({ error: error.message });
+    await transaction.rollback();
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
 // Método para actualizar un profesor
 const updateTeacher = async (req, res) => {

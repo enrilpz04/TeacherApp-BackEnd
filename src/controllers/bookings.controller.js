@@ -40,6 +40,8 @@ const getAllBookingsFromStudent = async (req, res) => {
       ],
       order: [['date', 'DESC']]
     });
+
+    
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ error: error.message });

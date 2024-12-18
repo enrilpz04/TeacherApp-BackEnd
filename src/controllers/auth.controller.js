@@ -35,7 +35,7 @@ const login = async (req, res) => {
       surname: user.surname,
       email: user.email,
       validated: user.validated,
-      avatar: user.avatar,
+      avatar: user.avatar ? user.avatar : null,
       rol: user.rol
     };
 
@@ -62,16 +62,15 @@ const login = async (req, res) => {
  */
 const register = async (req, res) => {
   const { name, surname, email, password, rol, validated } = req.body;
+  const avatar = req.file ? req.file.filename : null;
 
   try {
-    // Verificar si el correo electrónico ya existe
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
       return res.status(400).json({ message: 'El correo electrónico ya está registrado' });
     }
 
-    // Encriptar la contraseña
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     const user = await User.create({
@@ -80,7 +79,8 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
       rol,
-      validated
+      validated,
+      avatar
     });
 
     const userResponse = {
@@ -89,7 +89,7 @@ const register = async (req, res) => {
       surname: user.surname,
       email: user.email,
       validated: user.validated,
-      avatar: user.avatar,
+      avatar: avatar ? avatar : null,
       rol: user.rol
     };
 

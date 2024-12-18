@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const upload = require('../../config/multer'); 
 const {
   getAllTeachers,
   getTeachersWithPagination,
@@ -16,7 +17,7 @@ const {
 router.get('/', getAllTeachers);
 router.get('/pagination', getTeachersWithPagination)
 router.put('/:id', updateTeacher);
-router.post('/', createTeacher);
+router.post('/', upload.single('avatar'), createTeacher);
 
 router.get('/:id', getTeacherById);
 router.delete('/:id', deleteTeacher);

@@ -17,10 +17,17 @@ const getAllNotifications = async (req, res) => {
 // Obtener todas las notificaciones de un usuario específico
 const getNotificationsByUser = async (req, res) => {
   const { userId } = req.params;
+  console.log(req.params)
   try {
     const notifications = await Notification.findAll({
-      where: { userId },
-      include: [{ model: User, as: 'user' }]
+      where: { userId: userId },
+      include: [
+        {
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] }
+      },
+    ]
     });
     res.json(notifications);
   } catch (error) {
@@ -47,14 +54,14 @@ const getNotificationById = async (req, res) => {
 
 // Crear una nueva notificación
 const createNotification = async (req, res) => {
-  const { type, message, date, read, userId } = req.body;
+  const { type, message, date, watched, user } = req.body;
   try {
     const newNotification = await Notification.create({
       type,
       message,
       date,
-      read,
-      userId
+      watched,
+      userId : user.id
     });
     res.status(201).json(newNotification);
   } catch (error) {

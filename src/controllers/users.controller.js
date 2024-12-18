@@ -1,4 +1,7 @@
 const { User } = require('../models');
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 
 // Método para obtener todos los usuarios con rol 'student' con paginación
 const getStudentsWithPagination = async (req, res) => {
@@ -26,8 +29,9 @@ const getStudentsWithPagination = async (req, res) => {
 
 // Método para actualizar un estudiante
 const updateStudent = async (req, res) => {
-    const { id } = req.params;
-    const { name, surname, email, validated, avatar } = req.body;
+  const { id } = req.params;
+  const { name, surname, email, password, validated } = req.body;
+  const avatar = req.file ? req.file.filename : null;
   
     try {
       const student = await User.findByPk(id);
@@ -44,7 +48,14 @@ const updateStudent = async (req, res) => {
       student.surname = surname || student.surname;
       student.email = email || student.email;
       student.validated = validated;
-      student.avatar = avatar || student.avatar;
+      
+      if (password) {
+        student.password = bcrypt.hashSync(password, 10);
+      }
+  
+      if (avatar) {
+        student.avatar = avatar;
+      }
   
       await student.save();
   
@@ -54,7 +65,53 @@ const updateStudent = async (req, res) => {
     }
   };
 
+  // Método para actualizar un estudiante
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, surname, email, password, validated } = req.body;
+  const avatar = req.file ? req.file.filename : null;
+  
+    try {
+      const user = await User.findByPk(id);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Estudiante no encontrado' });
+      }
+  
+      user.name = name || user.name;
+      user.surname = surname || user.surname;
+      user.email = email || user.email;
+      user.validated = validated;
+      
+      if (password) {
+        user.password = bcrypt.hashSync(password, 10);
+      }
+      console.log(avatar)
+      if (avatar) {
+      console.log(avatar)
+        // Eliminar el avatar anterior si existe
+        if (user.avatar) {
+          const oldAvatarPath = path.join(__dirname, '../uploads/avatars', user.avatar);
+          fs.unlink(oldAvatarPath, (err) => {
+            if (err) {
+              console.error('Error al eliminar el avatar anterior:', err);
+            }
+          });
+        }
+        user.avatar = avatar;
+      }
+  
+      await user.save();
+  
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+
 module.exports = {
   getStudentsWithPagination,
-  updateStudent
+  updateStudent,
+  updateUser
 };

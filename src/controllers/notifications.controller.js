@@ -69,6 +69,25 @@ const createNotification = async (req, res) => {
   }
 };
 
+// Eliminar notificaciones leídas del popup
+const clearNotifications = async (req, res) => {
+  const { userId } = req.params;
+  try {
+
+    const notifications = await Notification.findAll({
+      where: { userId }
+    });
+
+    for (const notification of notifications) {
+      notification.watched = 1; // Marca como leída
+      await notification.save(); //Guarda los cambios en la base de datos
+    }
+    res.json({ message: 'Notificaciones actualizadas' });  
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Actualizar una notificación existente
 const updateNotification = async (req, res) => {
   const { id } = req.params;
@@ -112,6 +131,7 @@ module.exports = {
   getAllNotifications,
   getNotificationsByUser,
   getNotificationById,
+  clearNotifications,
   createNotification,
   updateNotification,
   deleteNotification

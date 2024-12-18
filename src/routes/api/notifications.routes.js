@@ -3,6 +3,7 @@ const {
   getAllNotifications,
   getNotificationsByUser,
   getNotificationById,
+  clearNotifications,
   createNotification,
   updateNotification,
   deleteNotification
@@ -16,6 +17,9 @@ router.get('/user/:userId', getNotificationsByUser);
 
 // Obtener una notificación por su ID
 router.get('/:id', getNotificationById);
+
+// Eliminar notificaciones leídas del popup:
+router.put('/user/clear/:userId', clearNotifications);
 
 // Crear una nueva notificación
 router.post('/', createNotification);
